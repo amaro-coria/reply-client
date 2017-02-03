@@ -24,10 +24,29 @@ import com.teknei.util.UtilConstants;
 /**
  * Generic business class parameterized with arguments for reflection
  * invocation. If custom behavior needed, must provide other implementation.
- * Behavior: 1) Collects 50 records from database with 'false' flag 2) Transform
- * to DTO representation 3) Send via API - JSON to server (according to method
- * name provided) 4) Returns remote response 5) According to response, if
- * success updates local records with 'true' flag
+ * Behavior:
+ * 
+ * <pre>
+ *  
+ * 1) Collects 50 records from database with 'false' flag
+ * </pre>
+ * 
+ * <pre>
+ *  
+ * 2) Transform to DTO representation
+ * </pre>
+ * 
+ * <pre>
+ * 3) Send via API - JSON to server (according to method name provided)
+ * </pre>
+ * 
+ * <pre>
+ *  4) Returns remote response
+ * </pre>
+ * 
+ * <pre>
+ *  5) According to response, if success updates local records with 'true' flag
+ * </pre>
  * 
  * @author Jorge Amaro
  * @version 1.0.0
@@ -76,7 +95,7 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 
 	/*
 	 * Provided variables
-	 * */
+	 */
 	private Class<DispID> typeDispID;
 	private CrudRepository<Envi, EnviID> daoEnvi;
 	private CrudRepository<Disp, DispID> daoDisp;
@@ -94,14 +113,14 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 		try {
 			// Declares a list of EnviPK records
 			List<EnviID> listEnviID = new ArrayList<>();
-			//Obtains runtime class for Envi object
+			// Obtains runtime class for Envi object
 			Class<?> clazzEnviDAOImpl = daoEnvi.getClass();
-			//Obtain method reference
+			// Obtain method reference
 			Method findTop50 = clazzEnviDAOImpl.getMethod("findTop50ByBolEnviOrderByFchEnviAsc", boolean.class);
-			//Invoke and obtain
+			// Invoke and obtain
 			List<Envi> listEnvi = (List<Envi>) findTop50.invoke(daoEnvi, new Object[] { false });
 			List<Disp> listDisp = listEnvi.stream().map(e -> {
-				//Fills the object via reflection
+				// Fills the object via reflection
 				PropertyAccessor propertyAccessorEnvi = PropertyAccessorFactory.forBeanPropertyAccess(e);
 				EnviID enviIDObj = (EnviID) propertyAccessorEnvi.getPropertyValue("id");
 				PropertyAccessor propertyAccessorEnviPK = PropertyAccessorFactory.forBeanPropertyAccess(enviIDObj);
@@ -125,8 +144,8 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 					}
 				}
 				Disp d = daoDisp.findOne(dispIDObj);
-				//Update if no source found
-				if(d == null){
+				// Update if no source found
+				if (d == null) {
 					PropertyAccessor propertyAccessorEnviFirst = PropertyAccessorFactory.forBeanPropertyAccess(e);
 					propertyAccessorEnviFirst.setPropertyValue("bolEnvi", true);
 					propertyAccessorEnviFirst.setPropertyValue("codEnvi", UtilConstants.NOT_FOUND);
@@ -134,15 +153,15 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 				}
 				return d;
 			}).collect(Collectors.toList());
-			//Collects and transforms to DTO list
+			// Collects and transforms to DTO list
 			List<DTO> listDTO = listDisp.stream().map(d -> assembler.getDTO(d)).collect(Collectors.toList());
-			//Obtain method reference to API
+			// Obtain method reference to API
 			Method apiMethod = ApiClient.class.getMethod(nameApiMethod, List.class);
-			//Invoke and wait for response
+			// Invoke and wait for response
 			ResponseDTO responseDTO = (ResponseDTO) apiMethod.invoke(apiClient, listDTO);
 			if (responseDTO != null && responseDTO.getStatusCode().equals(UtilConstants.STATUS_OK)) {
 				listEnviID.forEach(s -> {
-					//Update local resources
+					// Update local resources
 					Envi e = daoEnvi.findOne(s);
 					PropertyAccessor propertyAccessorEnvi = PropertyAccessorFactory.forBeanPropertyAccess(e);
 					propertyAccessorEnvi.setPropertyValue("bolEnvi", true);
