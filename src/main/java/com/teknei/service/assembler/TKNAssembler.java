@@ -5,6 +5,7 @@ package com.teknei.service.assembler;
 
 import org.springframework.stereotype.Component;
 
+import com.teknei.dto.CaupTranDTO;
 import com.teknei.dto.SbopAcceSaliDTO;
 import com.teknei.dto.SbopAsgnTurnDTO;
 import com.teknei.dto.SbopContAcceDTO;
@@ -13,10 +14,12 @@ import com.teknei.dto.SbopRecaDiviDTO;
 import com.teknei.dto.SbopTranDTO;
 import com.teknei.dto.SbopTranDiviDTO;
 import com.teknei.dto.SbopTurnDTO;
+import com.teknei.dto.SfmoHistReceNaveDTO;
 import com.teknei.dto.SfopEquiAlarDTO;
 import com.teknei.dto.SfopMsgCondDTO;
 import com.teknei.dto.SfruAsgnDTO;
 import com.teknei.dto.SfvhDataDiaDTO;
+import com.teknei.persistence.entities.disp.CaupTran;
 import com.teknei.persistence.entities.disp.SbopAcceSali;
 import com.teknei.persistence.entities.disp.SbopAsgnTurn;
 import com.teknei.persistence.entities.disp.SbopContAcce;
@@ -25,6 +28,7 @@ import com.teknei.persistence.entities.disp.SbopRecaDivi;
 import com.teknei.persistence.entities.disp.SbopTran;
 import com.teknei.persistence.entities.disp.SbopTranDivi;
 import com.teknei.persistence.entities.disp.SbopTurn;
+import com.teknei.persistence.entities.disp.SfmoHistReceNave;
 import com.teknei.persistence.entities.disp.SfopEquiAlar;
 import com.teknei.persistence.entities.disp.SfopMsgCond;
 import com.teknei.persistence.entities.disp.SfruAsgn;
@@ -147,6 +151,24 @@ public class TKNAssembler {
 	 */
 	public Assembler<SfvhDataDiaDTO, SfvhDataDia> getAssemblerSfvhDataDia() {
 		return new Assembler<>(SfvhDataDiaDTO.class, SfvhDataDia.class);
+	}
+	
+	/**
+	 * Returns {@code Assembler} for SfmoHistReceNave related classes
+	 * 
+	 * @return the assembler built
+	 */
+	public Assembler<SfmoHistReceNaveDTO, SfmoHistReceNave> getAssemblerSfmoHistReceNave() {
+		return new Assembler<>(SfmoHistReceNaveDTO.class, SfmoHistReceNave.class);
+	}
+	
+	/**
+	 * Returns {@code Assembler} for CaupTran related classes
+	 * 
+	 * @return the assembler built
+	 */
+	public Assembler<CaupTranDTO, CaupTran> getAssemblerCaupTran() {
+		return new Assembler<>(CaupTranDTO.class, CaupTran.class);
 	}
 
 }

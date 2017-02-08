@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.teknei.dto.CaupTranDTO;
 import com.teknei.dto.ResponseDTO;
 import com.teknei.dto.SbopAcceSaliDTO;
 import com.teknei.dto.SbopAsgnTurnDTO;
@@ -18,6 +19,7 @@ import com.teknei.dto.SbopRecaDiviDTO;
 import com.teknei.dto.SbopTranDTO;
 import com.teknei.dto.SbopTranDiviDTO;
 import com.teknei.dto.SbopTurnDTO;
+import com.teknei.dto.SfmoHistReceNaveDTO;
 import com.teknei.dto.SfopEquiAlarDTO;
 import com.teknei.dto.SfopMsgCondDTO;
 import com.teknei.dto.SfruAsgnDTO;
@@ -154,4 +156,24 @@ public interface ApiClient {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "sfvh/save")
 	ResponseDTO sendSfvhRecords(@RequestBody List<SfvhDataDiaDTO> list);
+	
+	/**
+	 * Method for send collection of DTO records to the remote API via REST
+	 * 
+	 * @param list
+	 *            the collection to send
+	 * @return the remote response
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "sfmo/save")
+	ResponseDTO sendSfmoRecords(@RequestBody List<SfmoHistReceNaveDTO> list);
+	
+	/**
+	 * Method for send collection of DTO records to the remote API via REST
+	 * 
+	 * @param list
+	 *            the collection to send
+	 * @return the remote response
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "cau/save")
+	ResponseDTO sendCauRecords(@RequestBody List<CaupTranDTO> list);
 }

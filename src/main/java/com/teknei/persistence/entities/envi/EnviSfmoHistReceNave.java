@@ -1,3 +1,6 @@
+/**
+ * Teknei 2016
+ */
 package com.teknei.persistence.entities.envi;
 
 import java.io.Serializable;

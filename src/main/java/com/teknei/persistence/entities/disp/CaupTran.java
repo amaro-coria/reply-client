@@ -23,7 +23,7 @@ public class CaupTran implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private CaupTranPK id;
+	private CaupTranPK pk;
 
 	@Column(name="des_moti_sust")
 	private String desMotiSust;

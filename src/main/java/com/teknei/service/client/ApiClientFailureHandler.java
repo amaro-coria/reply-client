@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.teknei.dto.CaupTranDTO;
 import com.teknei.dto.ResponseDTO;
 import com.teknei.dto.SbopAcceSaliDTO;
 import com.teknei.dto.SbopAsgnTurnDTO;
@@ -17,22 +18,29 @@ import com.teknei.dto.SbopRecaDiviDTO;
 import com.teknei.dto.SbopTranDTO;
 import com.teknei.dto.SbopTranDiviDTO;
 import com.teknei.dto.SbopTurnDTO;
+import com.teknei.dto.SfmoHistReceNaveDTO;
 import com.teknei.dto.SfopEquiAlarDTO;
+import com.teknei.dto.SfopMsgCondDTO;
+import com.teknei.dto.SfruAsgnDTO;
+import com.teknei.dto.SfvhDataDiaDTO;
 import com.teknei.util.UtilConstants;
 
 /**
  * Failure implementing class
+ * 
  * @author Jorge Amaro Coria
  * @version 1.0.0
  * @since 1.0.0
  *
  */
 @Component
-public class ApiClientFailureHandler implements ApiClient{
-	
+public class ApiClientFailureHandler implements ApiClient {
+
 	private static final Logger log = LoggerFactory.getLogger(ApiClientFailureHandler.class);
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.teknei.service.client.ApiClient#sendTurnRecords(java.util.List)
 	 */
 	@Override
@@ -41,7 +49,9 @@ public class ApiClientFailureHandler implements ApiClient{
 		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.teknei.service.client.ApiClient#sendAcceRecords(java.util.List)
 	 */
 	@Override
@@ -50,8 +60,11 @@ public class ApiClientFailureHandler implements ApiClient{
 		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.teknei.service.client.ApiClient#sendAsgnTurnRecords(java.util.List)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.teknei.service.client.ApiClient#sendAsgnTurnRecords(java.util.List)
 	 */
 	@Override
 	public ResponseDTO sendAsgnTurnRecords(List<SbopAsgnTurnDTO> list) {
@@ -59,7 +72,9 @@ public class ApiClientFailureHandler implements ApiClient{
 		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.teknei.service.client.ApiClient#sendTranRecords(java.util.List)
 	 */
 	@Override
@@ -68,8 +83,11 @@ public class ApiClientFailureHandler implements ApiClient{
 		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.teknei.service.client.ApiClient#sendTranDiviRecords(java.util.List)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.teknei.service.client.ApiClient#sendTranDiviRecords(java.util.List)
 	 */
 	@Override
 	public ResponseDTO sendTranDiviRecords(List<SbopTranDiviDTO> list) {
@@ -77,7 +95,9 @@ public class ApiClientFailureHandler implements ApiClient{
 		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.teknei.service.client.ApiClient#sendRecaRecords(java.util.List)
 	 */
 	@Override
@@ -86,8 +106,11 @@ public class ApiClientFailureHandler implements ApiClient{
 		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.teknei.service.client.ApiClient#sendRecaDiviRecords(java.util.List)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.teknei.service.client.ApiClient#sendRecaDiviRecords(java.util.List)
 	 */
 	@Override
 	public ResponseDTO sendRecaDiviRecords(List<SbopRecaDiviDTO> list) {
@@ -95,8 +118,11 @@ public class ApiClientFailureHandler implements ApiClient{
 		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.teknei.service.client.ApiClient#sendContAcceRecords(java.util.List)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.teknei.service.client.ApiClient#sendContAcceRecords(java.util.List)
 	 */
 	@Override
 	public ResponseDTO sendContAcceRecords(List<SbopRecaDiviDTO> list) {
@@ -104,12 +130,70 @@ public class ApiClientFailureHandler implements ApiClient{
 		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.teknei.service.client.ApiClient#sendSfopEquiAlarRecords(java.util.List)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.teknei.service.client.ApiClient#sendSfopEquiAlarRecords(java.util.
+	 * List)
 	 */
 	@Override
 	public ResponseDTO sendSfopEquiAlarRecords(List<SfopEquiAlarDTO> list) {
 		log.error("Error sending sfopEquiAlar records to API");
+		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.teknei.service.client.ApiClient#sendMsgCondRecords(java.util.List)
+	 */
+	@Override
+	public ResponseDTO sendMsgCondRecords(List<SfopMsgCondDTO> list) {
+		log.error("Error sending msgCond records to API");
+		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.teknei.service.client.ApiClient#sendSfruRecords(java.util.List)
+	 */
+	@Override
+	public ResponseDTO sendSfruRecords(List<SfruAsgnDTO> list) {
+		log.error("Error sending sfruAsgn records to API");
+		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.teknei.service.client.ApiClient#sendSfvhRecords(java.util.List)
+	 */
+	@Override
+	public ResponseDTO sendSfvhRecords(List<SfvhDataDiaDTO> list) {
+		log.error("Error sending sfvhDataDia records to API");
+		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.teknei.service.client.ApiClient#sendSfmoRecords(java.util.List)
+	 */
+	@Override
+	public ResponseDTO sendSfmoRecords(List<SfmoHistReceNaveDTO> list) {
+		log.error("Error sending sfmoHistReceNave records to API");
+		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.teknei.service.client.ApiClient#sendCauRecords(java.util.List)
+	 */
+	@Override
+	public ResponseDTO sendCauRecords(List<CaupTranDTO> list) {
+		log.error("Error sending cauTran records to API");
 		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
 	}
 

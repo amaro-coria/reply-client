@@ -87,6 +87,7 @@ public class ReplyBusController {
 		serviceInvoker.getMapReplyServices().get(ReplyOptions.SFOP_MSG_COND).replyData();
 		serviceInvoker.getMapReplyServices().get(ReplyOptions.SFRU_ASGN).replyData();
 		serviceInvoker.getMapReplyServices().get(ReplyOptions.SFVH_DATA_DIA).replyData();
+		serviceInvoker.getMapReplyServices().get(ReplyOptions.SFMO_HIST).replyData();
 	}
 
 	/**
@@ -131,6 +132,10 @@ public class ReplyBusController {
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
 			log.warn("Error detected in sfvhDataDia, not aborting, no fatal error.");
 		}
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFMO_HIST).replyData();
+		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
+			log.warn("Error detected in sfmoHistReceNave, not aborting, no fatal error.");
+		}
 		log.debug("Successful lap!");
 
 	}
@@ -174,9 +179,15 @@ public class ReplyBusController {
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
 			log.error("Reply aborted at sfruAsgn, error detected. Continue from the beginnig");
 			return;
-		}response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFVH_DATA_DIA).replyData();
+		}
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFVH_DATA_DIA).replyData();
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
 			log.error("Reply aborted at sfvhDataDia, error detected. Continue from the beginnig");
+			return;
+		}
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFMO_HIST).replyData();
+		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
+			log.error("Reply aborted at sfmoHistReceNave, error detected. Continue from the beginnig");
 			return;
 		}
 	}
