@@ -18,6 +18,7 @@ import lombok.Data;
 @Data
 public class SbopContAcceDTO implements Serializable{
 
+	private Long id;
 	private Integer idContAcce;
 	private Long idTurn;
 	private Integer idEqui;

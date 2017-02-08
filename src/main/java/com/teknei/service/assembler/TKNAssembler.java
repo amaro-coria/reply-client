@@ -13,6 +13,10 @@ import com.teknei.dto.SbopRecaDiviDTO;
 import com.teknei.dto.SbopTranDTO;
 import com.teknei.dto.SbopTranDiviDTO;
 import com.teknei.dto.SbopTurnDTO;
+import com.teknei.dto.SfopEquiAlarDTO;
+import com.teknei.dto.SfopMsgCondDTO;
+import com.teknei.dto.SfruAsgnDTO;
+import com.teknei.dto.SfvhDataDiaDTO;
 import com.teknei.persistence.entities.disp.SbopAcceSali;
 import com.teknei.persistence.entities.disp.SbopAsgnTurn;
 import com.teknei.persistence.entities.disp.SbopContAcce;
@@ -21,9 +25,14 @@ import com.teknei.persistence.entities.disp.SbopRecaDivi;
 import com.teknei.persistence.entities.disp.SbopTran;
 import com.teknei.persistence.entities.disp.SbopTranDivi;
 import com.teknei.persistence.entities.disp.SbopTurn;
+import com.teknei.persistence.entities.disp.SfopEquiAlar;
+import com.teknei.persistence.entities.disp.SfopMsgCond;
+import com.teknei.persistence.entities.disp.SfruAsgn;
+import com.teknei.persistence.entities.disp.SfvhDataDia;
 
 /**
  * Factory assembler for business entities and DTO's
+ * 
  * @author Jorge Amaro Coria
  * @version 1.0.0
  * @since 1.0.0
@@ -34,6 +43,7 @@ public class TKNAssembler {
 
 	/**
 	 * Returns {@code Assembler} for SbopTurn related classes
+	 * 
 	 * @return the assembler built
 	 */
 	public Assembler<SbopTurnDTO, SbopTurn> getAssemblerSbopTurn() {
@@ -42,6 +52,7 @@ public class TKNAssembler {
 
 	/**
 	 * Returns {@code Assembler} for SbopAsgnTurn related classes
+	 * 
 	 * @return the assembler built
 	 */
 	public Assembler<SbopAsgnTurnDTO, SbopAsgnTurn> getAssemblerSbopAsgnTurn() {
@@ -50,6 +61,7 @@ public class TKNAssembler {
 
 	/**
 	 * Returns {@code Assembler} for SbopAcceSali related classes
+	 * 
 	 * @return the assembler built
 	 */
 	public Assembler<SbopAcceSaliDTO, SbopAcceSali> getAssemblerSbopAcceSali() {
@@ -58,6 +70,7 @@ public class TKNAssembler {
 
 	/**
 	 * Returns {@code Assembler} for SbopTran related classes
+	 * 
 	 * @return the assembler built
 	 */
 	public Assembler<SbopTranDTO, SbopTran> getAssemblerSbopTran() {
@@ -66,6 +79,7 @@ public class TKNAssembler {
 
 	/**
 	 * Returns {@code Assembler} for SbopTranDivi related classes
+	 * 
 	 * @return the assembler built
 	 */
 	public Assembler<SbopTranDiviDTO, SbopTranDivi> getAssemblerSbopTranDivi() {
@@ -74,6 +88,7 @@ public class TKNAssembler {
 
 	/**
 	 * Returns {@code Assembler} for SbopReca related classes
+	 * 
 	 * @return the assembler built
 	 */
 	public Assembler<SbopRecaDTO, SbopReca> getAssemblerSbopReca() {
@@ -82,18 +97,56 @@ public class TKNAssembler {
 
 	/**
 	 * Returns {@code Assembler} for SbopRecaDivi related classes
+	 * 
 	 * @return the assembler built
 	 */
 	public Assembler<SbopRecaDiviDTO, SbopRecaDivi> getAssemblerSbopRecaDivi() {
 		return new Assembler<>(SbopRecaDiviDTO.class, SbopRecaDivi.class);
 	}
-	
+
 	/**
 	 * Returns {@code Assembler} for SbopContAcce related classes
+	 * 
 	 * @return the assembler built
 	 */
 	public Assembler<SbopContAcceDTO, SbopContAcce> getAssemblerSbopContAcce() {
 		return new Assembler<>(SbopContAcceDTO.class, SbopContAcce.class);
+	}
+
+	/**
+	 * Returns {@code Assembler} for SfopEquiAlar related classes
+	 * 
+	 * @return the assembler built
+	 */
+	public Assembler<SfopEquiAlarDTO, SfopEquiAlar> getAssemblerSfopEquiAlar() {
+		return new Assembler<>(SfopEquiAlarDTO.class, SfopEquiAlar.class);
+	}
+
+	/**
+	 * Returns {@code Assembler} for SfopMsgCond related classes
+	 * 
+	 * @return the assembler built
+	 */
+	public Assembler<SfopMsgCondDTO, SfopMsgCond> getAssemblerSfopMsgCond() {
+		return new Assembler<>(SfopMsgCondDTO.class, SfopMsgCond.class);
+	}
+
+	/**
+	 * Returns {@code Assembler} for SfruAsgn related classes
+	 * 
+	 * @return the assembler built
+	 */
+	public Assembler<SfruAsgnDTO, SfruAsgn> getAssemblerSfruAsgn() {
+		return new Assembler<>(SfruAsgnDTO.class, SfruAsgn.class);
+	}
+
+	/**
+	 * Returns {@code Assembler} for SfruAsgn related classes
+	 * 
+	 * @return the assembler built
+	 */
+	public Assembler<SfvhDataDiaDTO, SfvhDataDia> getAssemblerSfvhDataDia() {
+		return new Assembler<>(SfvhDataDiaDTO.class, SfvhDataDia.class);
 	}
 
 }

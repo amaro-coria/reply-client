@@ -18,6 +18,10 @@ import com.teknei.dto.SbopRecaDiviDTO;
 import com.teknei.dto.SbopTranDTO;
 import com.teknei.dto.SbopTranDiviDTO;
 import com.teknei.dto.SbopTurnDTO;
+import com.teknei.dto.SfopEquiAlarDTO;
+import com.teknei.dto.SfopMsgCondDTO;
+import com.teknei.dto.SfruAsgnDTO;
+import com.teknei.dto.SfvhDataDiaDTO;
 
 /**
  * Rest automated client via Spring for remote API
@@ -110,4 +114,44 @@ public interface ApiClient {
 	@RequestMapping(method = RequestMethod.POST, value = "cont/save")
 	ResponseDTO sendContAcceRecords(@RequestBody List<SbopRecaDiviDTO> list);
 
+	
+	/**
+	 * Method for send collection of DTO records to the remote API via REST
+	 * 
+	 * @param list
+	 *            the collection to send
+	 * @return the remote response
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "sfopAlar/save")
+	ResponseDTO sendSfopEquiAlarRecords(@RequestBody List<SfopEquiAlarDTO> list);
+	
+	/**
+	 * Method for send collection of DTO records to the remote API via REST
+	 * 
+	 * @param list
+	 *            the collection to send
+	 * @return the remote response
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "sfopMsg/save")
+	ResponseDTO sendMsgCondRecords(@RequestBody List<SfopMsgCondDTO> list);
+	
+	/**
+	 * Method for send collection of DTO records to the remote API via REST
+	 * 
+	 * @param list
+	 *            the collection to send
+	 * @return the remote response
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "sfru/save")
+	ResponseDTO sendSfruRecords(@RequestBody List<SfruAsgnDTO> list);
+	
+	/**
+	 * Method for send collection of DTO records to the remote API via REST
+	 * 
+	 * @param list
+	 *            the collection to send
+	 * @return the remote response
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "sfvh/save")
+	ResponseDTO sendSfvhRecords(@RequestBody List<SfvhDataDiaDTO> list);
 }

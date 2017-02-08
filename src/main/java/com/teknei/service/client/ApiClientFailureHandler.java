@@ -17,6 +17,7 @@ import com.teknei.dto.SbopRecaDiviDTO;
 import com.teknei.dto.SbopTranDTO;
 import com.teknei.dto.SbopTranDiviDTO;
 import com.teknei.dto.SbopTurnDTO;
+import com.teknei.dto.SfopEquiAlarDTO;
 import com.teknei.util.UtilConstants;
 
 /**
@@ -100,6 +101,15 @@ public class ApiClientFailureHandler implements ApiClient{
 	@Override
 	public ResponseDTO sendContAcceRecords(List<SbopRecaDiviDTO> list) {
 		log.error("Error sending contAcce records to API");
+		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.teknei.service.client.ApiClient#sendSfopEquiAlarRecords(java.util.List)
+	 */
+	@Override
+	public ResponseDTO sendSfopEquiAlarRecords(List<SfopEquiAlarDTO> list) {
+		log.error("Error sending sfopEquiAlar records to API");
 		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
 	}
 

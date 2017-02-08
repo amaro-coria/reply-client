@@ -18,6 +18,7 @@ import lombok.Data;
 @Data
 public class SbopTranDiviDTO implements Serializable{
 
+	private Long id;
 	private Integer idTranDivi;
 	private Integer idTran;
 	private Integer idTurn;

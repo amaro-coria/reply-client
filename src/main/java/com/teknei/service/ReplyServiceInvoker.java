@@ -19,6 +19,10 @@ import com.teknei.dto.SbopRecaDiviDTO;
 import com.teknei.dto.SbopTranDTO;
 import com.teknei.dto.SbopTranDiviDTO;
 import com.teknei.dto.SbopTurnDTO;
+import com.teknei.dto.SfopEquiAlarDTO;
+import com.teknei.dto.SfopMsgCondDTO;
+import com.teknei.dto.SfruAsgnDTO;
+import com.teknei.dto.SfvhDataDiaDTO;
 import com.teknei.persistence.dao.SbopAcceSaliDispDAO;
 import com.teknei.persistence.dao.SbopAcceSaliEnviDAO;
 import com.teknei.persistence.dao.SbopAsgnTurnDispDAO;
@@ -35,6 +39,14 @@ import com.teknei.persistence.dao.SbopTranDiviEnviDAO;
 import com.teknei.persistence.dao.SbopTranEnviDAO;
 import com.teknei.persistence.dao.SbopTurnDispDAO;
 import com.teknei.persistence.dao.SbopTurnEnviDAO;
+import com.teknei.persistence.dao.SfopEquiAlarDispDAO;
+import com.teknei.persistence.dao.SfopEquiAlarEnviDAO;
+import com.teknei.persistence.dao.SfopMsgCondDispDAO;
+import com.teknei.persistence.dao.SfopMsgCondEnviDAO;
+import com.teknei.persistence.dao.SfruAsgnDispDAO;
+import com.teknei.persistence.dao.SfruAsgnEnviDAO;
+import com.teknei.persistence.dao.SfvhDataDiaDispDAO;
+import com.teknei.persistence.dao.SfvhDataDiaEnviDAO;
 import com.teknei.persistence.entities.disp.SbopAcceSali;
 import com.teknei.persistence.entities.disp.SbopAcceSaliPK;
 import com.teknei.persistence.entities.disp.SbopAsgnTurn;
@@ -51,6 +63,14 @@ import com.teknei.persistence.entities.disp.SbopTranDiviPK;
 import com.teknei.persistence.entities.disp.SbopTranPK;
 import com.teknei.persistence.entities.disp.SbopTurn;
 import com.teknei.persistence.entities.disp.SbopTurnPK;
+import com.teknei.persistence.entities.disp.SfopEquiAlar;
+import com.teknei.persistence.entities.disp.SfopEquiAlarPK;
+import com.teknei.persistence.entities.disp.SfopMsgCond;
+import com.teknei.persistence.entities.disp.SfopMsgCondPK;
+import com.teknei.persistence.entities.disp.SfruAsgn;
+import com.teknei.persistence.entities.disp.SfruAsgnPK;
+import com.teknei.persistence.entities.disp.SfvhDataDia;
+import com.teknei.persistence.entities.disp.SfvhDataDiaPK;
 import com.teknei.persistence.entities.envi.EnviSbopAcceSali;
 import com.teknei.persistence.entities.envi.EnviSbopAcceSaliPK;
 import com.teknei.persistence.entities.envi.EnviSbopAsgnTurn;
@@ -67,6 +87,14 @@ import com.teknei.persistence.entities.envi.EnviSbopTranDiviPK;
 import com.teknei.persistence.entities.envi.EnviSbopTranPK;
 import com.teknei.persistence.entities.envi.EnviSbopTurn;
 import com.teknei.persistence.entities.envi.EnviSbopTurnPK;
+import com.teknei.persistence.entities.envi.EnviSfopEquiAlar;
+import com.teknei.persistence.entities.envi.EnviSfopEquiAlarPK;
+import com.teknei.persistence.entities.envi.EnviSfopMsgCond;
+import com.teknei.persistence.entities.envi.EnviSfopMsgCondPK;
+import com.teknei.persistence.entities.envi.EnviSfruAsgn;
+import com.teknei.persistence.entities.envi.EnviSfruAsgnPK;
+import com.teknei.persistence.entities.envi.EnviSfvhDataDia;
+import com.teknei.persistence.entities.envi.EnviSfvhDataDiaPK;
 import com.teknei.service.assembler.TKNAssembler;
 import com.teknei.service.client.ApiClient;
 import com.teknei.util.ReplyOptions;
@@ -120,6 +148,22 @@ public class ReplyServiceInvoker {
 	private SbopContAcceEnviDAO daoEnviSbopContAcce;
 	@Autowired
 	private SbopContAcceDispDAO daoDispSbopContAcce;
+	@Autowired
+	private SfopEquiAlarEnviDAO daoEnviSfopEquiAlar;
+	@Autowired
+	private SfopEquiAlarDispDAO daoDispSfopEquiAlar;
+	@Autowired
+	private SfopMsgCondEnviDAO daoEnviSfopMsgCond;
+	@Autowired
+	private SfopMsgCondDispDAO daoDispSfopMsgCond;
+	@Autowired
+	private SfruAsgnDispDAO daoDispSfruAsgn;
+	@Autowired
+	private SfruAsgnEnviDAO daoEnviSfruAsgn;
+	@Autowired
+	private SfvhDataDiaDispDAO daoDispSfvhDataDia;
+	@Autowired
+	private SfvhDataDiaEnviDAO daoEnviSfvhDataDia;
 	/* Access map for store services */
 	private Map<ReplyOptions, ReplyServiceImpl> mapReplyServices;
 
@@ -159,18 +203,34 @@ public class ReplyServiceInvoker {
 		ReplyServiceImpl<EnviSbopTranDivi, EnviSbopTranDiviPK, SbopTranDivi, SbopTranDiviPK, SbopTranDiviDTO> serviceSbopTranDivi = new ReplyServiceImpl<>(
 				SbopTranDiviPK.class, daoEnviSbopTranDivi, daoDispSbopTranDivi, assembler.getAssemblerSbopTranDivi(),
 				"sendTranDiviRecords", client);
-		//Invoker for SbopReca
+		// Invoker for SbopReca
 		ReplyServiceImpl<EnviSbopReca, EnviSbopRecaPK, SbopReca, SbopRecaPK, SbopRecaDTO> serviceSbopReca = new ReplyServiceImpl<>(
-				SbopRecaPK.class, daoEnviSbopReca, daoDispSbopReca, assembler.getAssemblerSbopReca(),
-				"sendRecaRecords", client);
-		//Invoker for SbopRecaDivi
+				SbopRecaPK.class, daoEnviSbopReca, daoDispSbopReca, assembler.getAssemblerSbopReca(), "sendRecaRecords",
+				client);
+		// Invoker for SbopRecaDivi
 		ReplyServiceImpl<EnviSbopRecaDivi, EnviSbopRecaDiviPK, SbopRecaDivi, SbopRecaDiviPK, SbopRecaDiviDTO> serviceSbopRecaDivi = new ReplyServiceImpl<>(
 				SbopRecaDiviPK.class, daoEnviSbopRecaDivi, daoDispSbopRecaDivi, assembler.getAssemblerSbopRecaDivi(),
 				"sendRecaDiviRecords", client);
-		//Invoker for SbopContAcce 
+		// Invoker for SbopContAcce
 		ReplyServiceImpl<EnviSbopContAcce, EnviSbopContAccePK, SbopContAcce, SbopContAccePK, SbopContAcceDTO> serviceSbopContAcce = new ReplyServiceImpl<>(
 				SbopContAccePK.class, daoEnviSbopContAcce, daoDispSbopContAcce, assembler.getAssemblerSbopContAcce(),
 				"sendContAcceRecords", client);
+		// Invoker for SfopEquiAlar
+		ReplyServiceImpl<EnviSfopEquiAlar, EnviSfopEquiAlarPK, SfopEquiAlar, SfopEquiAlarPK, SfopEquiAlarDTO> serviceSfopEquiAlar = new ReplyServiceImpl<>(
+				SfopEquiAlarPK.class, daoEnviSfopEquiAlar, daoDispSfopEquiAlar, assembler.getAssemblerSfopEquiAlar(),
+				"sendSfopEquiAlarRecords", client);
+		// Invoker for SfopEquiAlar
+		ReplyServiceImpl<EnviSfopMsgCond, EnviSfopMsgCondPK, SfopMsgCond, SfopMsgCondPK, SfopMsgCondDTO> serviceSfopMsgCond = new ReplyServiceImpl<>(
+				SfopMsgCondPK.class, daoEnviSfopMsgCond, daoDispSfopMsgCond, assembler.getAssemblerSfopMsgCond(),
+				"sendMsgCondRecords", client);
+		// Invoker for SfruAsgn
+		ReplyServiceImpl<EnviSfruAsgn, EnviSfruAsgnPK, SfruAsgn, SfruAsgnPK, SfruAsgnDTO> serviceSfruAsgn = new ReplyServiceImpl<>(
+				SfruAsgnPK.class, daoEnviSfruAsgn, daoDispSfruAsgn, assembler.getAssemblerSfruAsgn(), "sendSfruRecords",
+				client);
+		// Invoker for SfvhDataDia
+		ReplyServiceImpl<EnviSfvhDataDia, EnviSfvhDataDiaPK, SfvhDataDia, SfvhDataDiaPK, SfvhDataDiaDTO> serviceSfvhDataDia = new ReplyServiceImpl<>(
+				SfvhDataDiaPK.class, daoEnviSfvhDataDia, daoDispSfvhDataDia, assembler.getAssemblerSfvhDataDia(),
+				"sendSfvhRecords", client);
 		mapReplyServices.put(ReplyOptions.SBOP_ACCE_SALI, serviceAcceSali);
 		mapReplyServices.put(ReplyOptions.SBOP_TURN, serviceSbopTurn);
 		mapReplyServices.put(ReplyOptions.SBOP_ASGN_TURN, serviceSbopAsgnTurn);
@@ -179,6 +239,10 @@ public class ReplyServiceInvoker {
 		mapReplyServices.put(ReplyOptions.SBOP_RECA, serviceSbopReca);
 		mapReplyServices.put(ReplyOptions.SBOP_RECA_DIVI, serviceSbopRecaDivi);
 		mapReplyServices.put(ReplyOptions.SBOP_CONT_ACCE, serviceSbopContAcce);
+		mapReplyServices.put(ReplyOptions.SFOP_EQUI_ALAR, serviceSfopEquiAlar);
+		mapReplyServices.put(ReplyOptions.SFOP_MSG_COND, serviceSfopMsgCond);
+		mapReplyServices.put(ReplyOptions.SFRU_ASGN, serviceSfruAsgn);
+		mapReplyServices.put(ReplyOptions.SFVH_DATA_DIA, serviceSfvhDataDia);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
@@ -22,9 +23,8 @@ import lombok.Data;
 public class SfopEquiAlar implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name="id_opeq_alar")
-	private Integer idOpeqAlar;
+	@EmbeddedId
+	private SfopEquiAlarPK pk;
 
 	@Column(name="desc_opeq_alar")
 	private String descOpeqAlar;
@@ -58,9 +58,6 @@ public class SfopEquiAlar implements Serializable {
 
 	@Column(name="id_tipo")
 	private Integer idTipo;
-
-	@Column(name="id_vehi")
-	private Integer idVehi;
 
 	@Column(name="lati_alar")
 	private double latiAlar;

@@ -19,7 +19,7 @@ import com.teknei.util.ReplyOptions;
 import com.teknei.util.UtilConstants;
 
 /**
- * Controller for reply VIA components
+ * Controller for reply BUS components
  * 
  * @author Jorge Amaro
  * @version 1.0.0
@@ -27,8 +27,8 @@ import com.teknei.util.UtilConstants;
  *
  */
 @Component
-@Profile("via")
-public class ReplyViaController {
+@Profile("bus")
+public class ReplyBusController {
 
 	/*
 	 * Injected elements
@@ -40,7 +40,7 @@ public class ReplyViaController {
 	@Value("${tkn.api.hierarchy}")
 	private boolean hierarchy;
 
-	private static final Logger log = LoggerFactory.getLogger(ReplyViaController.class);
+	private static final Logger log = LoggerFactory.getLogger(ReplyBusController.class);
 
 	/**
 	 * Entry point for scheduled processes
@@ -82,10 +82,11 @@ public class ReplyViaController {
 		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TURN).replyData();
 		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_ASGN_TURN).replyData();
 		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_ACCE_SALI).replyData();
-		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TRAN).replyData();
-		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TRAN_DIVI).replyData();
-		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_RECA).replyData();
-		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_RECA_DIVI).replyData();
+		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_CONT_ACCE).replyData();
+		serviceInvoker.getMapReplyServices().get(ReplyOptions.SFOP_EQUI_ALAR).replyData();
+		serviceInvoker.getMapReplyServices().get(ReplyOptions.SFOP_MSG_COND).replyData();
+		serviceInvoker.getMapReplyServices().get(ReplyOptions.SFRU_ASGN).replyData();
+		serviceInvoker.getMapReplyServices().get(ReplyOptions.SFVH_DATA_DIA).replyData();
 	}
 
 	/**
@@ -106,23 +107,29 @@ public class ReplyViaController {
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
 			log.warn("Error detected in acceSali, not aborting, no fatal error.");
 		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TRAN).replyData();
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_CONT_ACCE).replyData();
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.error("Reply aborted at sbopTran, error detected. Continue from the beginnig");
-			return;
+			log.warn("Error detected in contAcce, not aborting, no fatal error.");
 		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TRAN_DIVI).replyData();
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFOP_EQUI_ALAR).replyData();
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.warn("Error detected in tranDivi, not aborting, no fatal error.");
+			log.warn("Error detected in sfopEquiAlar, not aborting, no fatal error.");
 		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_RECA).replyData();
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFOP_EQUI_ALAR).replyData();
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.error("Reply aborted at sbopReca, error detected. Continue from the beginnig");
-			return;
+			log.warn("Error detected in sfopEquiAlar, not aborting, no fatal error.");
 		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_RECA_DIVI).replyData();
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFOP_MSG_COND).replyData();
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.warn("Error detected in recaDivi, not aborting, no fatal error.");
+			log.warn("Error detected in sfopMsgCond, not aborting, no fatal error.");
+		}
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFRU_ASGN).replyData();
+		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
+			log.warn("Error detected in sfruAsgn, not aborting, no fatal error.");
+		}
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFVH_DATA_DIA).replyData();
+		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
+			log.warn("Error detected in sfvhDataDia, not aborting, no fatal error.");
 		}
 		log.debug("Successful lap!");
 
@@ -148,24 +155,28 @@ public class ReplyViaController {
 			log.error("Reply aborted at acceSali, error detected. Continue from the beginnig");
 			return;
 		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TRAN).replyData();
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_CONT_ACCE).replyData();
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.error("Reply aborted at sbopTran, error detected. Continue from the beginnig");
+			log.error("Reply aborted at asgnTurn, error detected. Continue from the beginnig");
 			return;
 		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TRAN_DIVI).replyData();
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_ASGN_TURN).replyData();
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.error("Reply aborted at sbopTranDivi, error detected. Continue from the beginnig");
+			log.error("Reply aborted at contAcce, error detected. Continue from the beginnig");
 			return;
 		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_RECA).replyData();
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFOP_MSG_COND).replyData();
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.error("Reply aborted at sbopReca, error detected. Continue from the beginnig");
+			log.error("Reply aborted at sfopMsgCond, error detected. Continue from the beginnig");
 			return;
 		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_RECA_DIVI).replyData();
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFRU_ASGN).replyData();
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.error("Reply aborted at sbopRecaDivi, error detected. Continue from the beginnig");
+			log.error("Reply aborted at sfruAsgn, error detected. Continue from the beginnig");
+			return;
+		}response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFVH_DATA_DIA).replyData();
+		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
+			log.error("Reply aborted at sfvhDataDia, error detected. Continue from the beginnig");
 			return;
 		}
 	}

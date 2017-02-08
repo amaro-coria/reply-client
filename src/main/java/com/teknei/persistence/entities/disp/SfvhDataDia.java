@@ -23,7 +23,7 @@ public class SfvhDataDia implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private SfvhDataDiaPK id;
+	private SfvhDataDiaPK pk;
 
 	@Column(name="dia_reg")
 	private Timestamp diaReg;

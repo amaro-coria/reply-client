@@ -22,7 +22,7 @@ public class SfruAsgn implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private SfruAsgnPK id;
+	private SfruAsgnPK pk;
 
 	@Column(name="fch_crea")
 	private Timestamp fchCrea;

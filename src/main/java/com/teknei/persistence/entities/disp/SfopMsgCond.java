@@ -4,9 +4,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -22,9 +21,8 @@ import lombok.Data;
 public class SfopMsgCond implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name="id_msg_cond")
-	private Integer idMsgCond;
+	@EmbeddedId
+	private SfopMsgCondPK pk;
 
 	@Column(name="fch_crea")
 	private Timestamp fchCrea;
@@ -40,9 +38,6 @@ public class SfopMsgCond implements Serializable {
 
 	@Column(name="id_tipo")
 	private Integer idTipo;
-
-	@Column(name="id_vehi")
-	private Integer idVehi;
 
 	private String msg;
 

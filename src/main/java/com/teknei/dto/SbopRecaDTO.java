@@ -18,6 +18,7 @@ import lombok.Data;
 @Data
 public class SbopRecaDTO implements Serializable {
 
+	private Long id;
 	private Integer idReca;
 	private Integer idEqui;
 	private Timestamp fchCrea;
