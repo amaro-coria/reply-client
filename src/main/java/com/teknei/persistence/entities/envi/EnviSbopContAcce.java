@@ -27,7 +27,7 @@ public class EnviSbopContAcce implements java.io.Serializable {
 			@AttributeOverride(name = "idContAcce", column = @Column(name = "id_cont_acce", nullable = false)),
 			@AttributeOverride(name = "idTurn", column = @Column(name = "id_turn", nullable = false)),
 			@AttributeOverride(name = "idEqui", column = @Column(name = "id_equi", nullable = false)) })
-	private EnviSbopContAcceId id;
+	private EnviSbopContAccePK id;
 	@Column(name = "bol_envi", nullable = false)
 	private boolean bolEnvi;
 	@Column(name = "id_envi")

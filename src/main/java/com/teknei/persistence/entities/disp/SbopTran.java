@@ -24,7 +24,7 @@ public class SbopTran implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private SbopTranPK id;
+	private SbopTranPK pk;
 
 	private String canc;
 

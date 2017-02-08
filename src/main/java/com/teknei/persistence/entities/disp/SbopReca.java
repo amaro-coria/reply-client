@@ -23,7 +23,7 @@ public class SbopReca implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private SbopRecaPK id;
+	private SbopRecaPK pk;
 
 	@Column(name="fch_crea")
 	private Timestamp fchCrea;

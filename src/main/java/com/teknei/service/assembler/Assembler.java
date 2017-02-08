@@ -1,3 +1,6 @@
+/**
+ * Teknei 2016
+ */
 package com.teknei.service.assembler;
 
 import java.lang.reflect.Field;
@@ -10,6 +13,15 @@ import org.springframework.beans.PropertyAccessorFactory;
 
 import lombok.SneakyThrows;
 
+/**
+ * Utility class for transform Entities into DTOs
+ * @author Jorge Amaro Coria
+ * @version 1.0.0
+ * @since 1.0.0
+ *
+ * @param <D> - DTO class
+ * @param <E> - Entity class
+ */
 public class Assembler<D, E> {
 
 	private static final Logger log = LoggerFactory.getLogger(Assembler.class);
@@ -22,6 +34,12 @@ public class Assembler<D, E> {
 		this.typeEntity = clazzEntity;
 	}
 
+	/**
+	 * Transform Entity object into DTO object
+	 * @param e - Entity object
+	 * @return DTO object
+	 * @throws RuntimeException - If any error ocurrs
+	 */
 	@SneakyThrows
 	public D getDTO(E e) {
 		Class clazzD = typeDTO;

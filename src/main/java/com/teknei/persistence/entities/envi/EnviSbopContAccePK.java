@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Embeddable
 @Data
-public class EnviSbopContAcceId implements java.io.Serializable {
+public class EnviSbopContAccePK implements java.io.Serializable {
 
 	/**
 	 * 

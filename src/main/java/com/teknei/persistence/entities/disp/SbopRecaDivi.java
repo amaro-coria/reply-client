@@ -23,7 +23,7 @@ public class SbopRecaDivi implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private SbopRecaDiviPK id;
+	private SbopRecaDiviPK pk;
 
 	private Integer cant;
 
