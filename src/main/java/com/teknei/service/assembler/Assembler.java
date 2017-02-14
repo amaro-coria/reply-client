@@ -4,6 +4,7 @@
 package com.teknei.service.assembler;
 
 import java.lang.reflect.Field;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,9 @@ public class Assembler<D, E> {
 	 */
 	@SneakyThrows
 	public D getDTO(E e) {
+		if(e == null){
+			return null;
+		}
 		Class clazzD = typeDTO;
 		D d = (D) clazzD.newInstance();
 		Field[] fields = e.getClass().getDeclaredFields();

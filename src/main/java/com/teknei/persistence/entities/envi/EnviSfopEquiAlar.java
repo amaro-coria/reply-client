@@ -16,7 +16,7 @@ import lombok.Data;
  * 
  */
 @Entity
-@Table(name="sfop_equi_alar")
+@Table(name="sfop_equi_alar", schema="sitm_envi")
 @Data
 public class EnviSfopEquiAlar implements Serializable {
 	private static final long serialVersionUID = 1L;

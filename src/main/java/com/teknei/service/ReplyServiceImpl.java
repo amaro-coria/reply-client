@@ -14,6 +14,7 @@ import org.springframework.beans.InvalidPropertyException;
 import org.springframework.beans.PropertyAccessor;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.util.CollectionUtils;
 
 import com.teknei.dto.ResponseDTO;
 import com.teknei.service.assembler.Assembler;
@@ -149,15 +150,25 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 					propertyAccessorEnviFirst.setPropertyValue("bolEnvi", true);
 					propertyAccessorEnviFirst.setPropertyValue("codEnvi", UtilConstants.NOT_FOUND);
 					daoEnvi.save(e);
+					return null;
 				}
 				return d;
 			}).collect(Collectors.toList());
 			// Collects and transforms to DTO list
 			List<DTO> listDTO = listDisp.stream().map(d -> assembler.getDTO(d)).collect(Collectors.toList());
 			// Obtain method reference to API
+			List<DTO> listDTOToSend = new ArrayList<>();
+			if(CollectionUtils.isEmpty(listDTO)){
+				return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+			}
+			listDTO.forEach(d -> {
+				if(d != null){
+					listDTOToSend.add(d);
+				}
+			});
 			Method apiMethod = ApiClient.class.getMethod(nameApiMethod, List.class);
 			// Invoke and wait for response
-			ResponseDTO responseDTO = (ResponseDTO) apiMethod.invoke(apiClient, listDTO);
+			ResponseDTO responseDTO = (ResponseDTO) apiMethod.invoke(apiClient, listDTOToSend);
 			if (responseDTO != null && responseDTO.getStatusCode().equals(UtilConstants.STATUS_OK)) {
 				listEnviID.forEach(s -> {
 					// Update local resources

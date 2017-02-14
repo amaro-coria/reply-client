@@ -16,7 +16,7 @@ import lombok.Data;
  * 
  */
 @Entity
-@Table(name="caup_tran", schema="sitm_disp")
+@Table(name="caup_tran", schema="sitm_envi")
 @Data
 public class EnviCaupTran implements Serializable {
 	private static final long serialVersionUID = 1L;

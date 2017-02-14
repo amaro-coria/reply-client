@@ -3,6 +3,6 @@ spring:
     name: reply-client
   cloud:
     config:
-      uri: http://localhost:8001
+      uri: http://172.17.0.125:8001
   profiles:
     active: via,oviedo
