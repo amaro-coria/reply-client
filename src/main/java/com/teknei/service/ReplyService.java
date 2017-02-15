@@ -19,5 +19,11 @@ public interface ReplyService {
 	 * @return DTO containing the status code of the operation
 	 */
 	ResponseDTO replyData();
+	
+	/**
+	 * Counts the remaining records to send via API
+	 * @return 0 if no remaining, the total otherwise
+	 */
+	long countMoreData();
 
 }

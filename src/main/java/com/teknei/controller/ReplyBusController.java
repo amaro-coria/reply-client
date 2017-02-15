@@ -3,17 +3,20 @@
  */
 package com.teknei.controller;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.teknei.dto.ResponseDTO;
+import com.teknei.service.ReplyServiceImpl;
 import com.teknei.service.ReplyServiceInvoker;
 import com.teknei.util.ReplyOptions;
 import com.teknei.util.UtilConstants;
@@ -26,7 +29,8 @@ import com.teknei.util.UtilConstants;
  * @since 1.0.0
  *
  */
-@Component
+@RestController
+@RequestMapping("/api/bus")
 @Profile("bus")
 public class ReplyBusController {
 
@@ -43,153 +47,73 @@ public class ReplyBusController {
 	private static final Logger log = LoggerFactory.getLogger(ReplyBusController.class);
 
 	/**
-	 * Entry point for scheduled processes
+	 * Entry point for reply bus processes
 	 */
-	@Scheduled(fixedRateString = "${tkn.reply.rate}")
-	public void reply() {
+	@RequestMapping(value = "reply", method = RequestMethod.GET)
+	public ResponseEntity<ResponseDTO> reply() {
 		replyData();
-	}
-
-	@PostConstruct
-	private void postConstruct() {
-		if (failFast) {
-			log.info("Reply in mode failFast");
-		} else if (hierarchy) {
-			log.info("Reply in mode hierarchy");
-		} else {
-			log.info("Reply in mode noFail");
-		}
+		ResponseDTO dto = new ResponseDTO(UtilConstants.STATUS_OK, UtilConstants.MESSAGE_OK);
+		return new ResponseEntity<ResponseDTO>(dto, HttpStatus.OK);
 	}
 
 	/**
-	 * Business method for types of replication
+	 * Business method for replication of remaining records
+	 * <pre>Enables async processes </pre>
 	 */
+	@Async
 	private void replyData() {
-		log.debug("Reply time: {}", System.currentTimeMillis());
-		if (failFast) {
-			replyDataFailFast();
-		} else if (hierarchy) {
-			replyDataHierarchy();
-		} else {
-			replyDataNoFail();
+		log.debug("Reply time init: {}", System.currentTimeMillis());
+		replyBusData();
+		log.debug("Reply time end: {}", System.currentTimeMillis());
+	}
+
+	/**
+	 * Invoker method for specific service in order to reply data to remote api
+	 * 
+	 * @param service
+	 *            - the service to invoke
+	 * @param option
+	 *            - the api option
+	 */
+	@SuppressWarnings("rawtypes")
+	private void replyBusDataForService(ReplyServiceImpl service, ReplyOptions option) {
+		ResponseDTO d = service.replyData();
+		if (!d.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
+			log.error("Error replicating data: {}", option);
+			replyBusDataForService(service, option);
+		}
+		long counterRemaining = service.countMoreData();
+		if (counterRemaining > 0) {
+			log.info("Data remaining : {} for option: {}", counterRemaining, option);
+			replyBusDataForService(service, option);
 		}
 	}
 
 	/**
-	 * Reply data regardless fails
+	 * Reply data in 'bus-way' , invokes continuous the services until there are
+	 * no remaining records to send
+	 * 
+	 * @see replyBusDataForService
 	 */
-	private void replyDataNoFail() {
-		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TURN).replyData();
-		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_ASGN_TURN).replyData();
-		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_ACCE_SALI).replyData();
-		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_CONT_ACCE).replyData();
-		serviceInvoker.getMapReplyServices().get(ReplyOptions.SFOP_EQUI_ALAR).replyData();
-		serviceInvoker.getMapReplyServices().get(ReplyOptions.SFOP_MSG_COND).replyData();
-		serviceInvoker.getMapReplyServices().get(ReplyOptions.SFRU_ASGN).replyData();
-		serviceInvoker.getMapReplyServices().get(ReplyOptions.SFVH_DATA_DIA).replyData();
-		serviceInvoker.getMapReplyServices().get(ReplyOptions.SFMO_HIST).replyData();
-	}
-
-	/**
-	 * Reply data with hierarchy mode according to business
-	 */
-	private void replyDataHierarchy() {
-		ResponseDTO response = null;
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TURN).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.error("Reply aborted at turn, error detected. Continue from the beginnig");
-			return;
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_ASGN_TURN).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.warn("Error detected in asgnTurn, not aborting, no fatal error.");
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_ACCE_SALI).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.warn("Error detected in acceSali, not aborting, no fatal error.");
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_CONT_ACCE).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.warn("Error detected in contAcce, not aborting, no fatal error.");
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFOP_EQUI_ALAR).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.warn("Error detected in sfopEquiAlar, not aborting, no fatal error.");
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFOP_EQUI_ALAR).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.warn("Error detected in sfopEquiAlar, not aborting, no fatal error.");
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFOP_MSG_COND).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.warn("Error detected in sfopMsgCond, not aborting, no fatal error.");
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFRU_ASGN).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.warn("Error detected in sfruAsgn, not aborting, no fatal error.");
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFVH_DATA_DIA).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.warn("Error detected in sfvhDataDia, not aborting, no fatal error.");
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFMO_HIST).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.warn("Error detected in sfmoHistReceNave, not aborting, no fatal error.");
-		}
-		log.debug("Successful lap!");
-
-	}
-
-	/**
-	 * Reply data. When error is detected in any method, aborts
-	 */
-	private void replyDataFailFast() {
-		ResponseDTO response = null;
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TURN).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.warn("Reply aborted at turn, error detected. Continue from the beginnig");
-			return;
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_ASGN_TURN).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.warn("Reply aborted at asgnTurn, error detected. Continue from the beginnig");
-			return;
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_ACCE_SALI).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.error("Reply aborted at acceSali, error detected. Continue from the beginnig");
-			return;
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_CONT_ACCE).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.error("Reply aborted at asgnTurn, error detected. Continue from the beginnig");
-			return;
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_ASGN_TURN).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.error("Reply aborted at contAcce, error detected. Continue from the beginnig");
-			return;
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFOP_MSG_COND).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.error("Reply aborted at sfopMsgCond, error detected. Continue from the beginnig");
-			return;
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFRU_ASGN).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.error("Reply aborted at sfruAsgn, error detected. Continue from the beginnig");
-			return;
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFVH_DATA_DIA).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.error("Reply aborted at sfvhDataDia, error detected. Continue from the beginnig");
-			return;
-		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SFMO_HIST).replyData();
-		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.error("Reply aborted at sfmoHistReceNave, error detected. Continue from the beginnig");
-			return;
-		}
+	private void replyBusData() {
+		replyBusDataForService(serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TURN),
+				ReplyOptions.SBOP_TURN);
+		replyBusDataForService(serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_ASGN_TURN),
+				ReplyOptions.SBOP_ASGN_TURN);
+		replyBusDataForService(serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_ACCE_SALI),
+				ReplyOptions.SBOP_ACCE_SALI);
+		replyBusDataForService(serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_CONT_ACCE),
+				ReplyOptions.SBOP_CONT_ACCE);
+		replyBusDataForService(serviceInvoker.getMapReplyServices().get(ReplyOptions.SFMO_HIST),
+				ReplyOptions.SFMO_HIST);
+		replyBusDataForService(serviceInvoker.getMapReplyServices().get(ReplyOptions.SFOP_EQUI_ALAR),
+				ReplyOptions.SFOP_EQUI_ALAR);
+		replyBusDataForService(serviceInvoker.getMapReplyServices().get(ReplyOptions.SFOP_MSG_COND),
+				ReplyOptions.SFOP_MSG_COND);
+		replyBusDataForService(serviceInvoker.getMapReplyServices().get(ReplyOptions.SFRU_ASGN),
+				ReplyOptions.SFRU_ASGN);
+		replyBusDataForService(serviceInvoker.getMapReplyServices().get(ReplyOptions.SFVH_DATA_DIA),
+				ReplyOptions.SFVH_DATA_DIA);
 	}
 
 }

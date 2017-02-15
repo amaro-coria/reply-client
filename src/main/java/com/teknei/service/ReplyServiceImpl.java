@@ -102,6 +102,22 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 	private Assembler<DTO, Disp> assembler;
 	private String nameApiMethod;
 	private ApiClient apiClient;
+	
+	/* (non-Javadoc)
+	 * @see com.teknei.service.ReplyService#countMoreData()
+	 */
+	@Override
+	public long countMoreData(){
+		try{
+			// Obtains runtime class for Envi object
+			Class<?> clazzEnviDAOImpl = daoEnvi.getClass();
+			Method countMoreDataMethod = clazzEnviDAOImpl.getMethod("countByBolEnvi", boolean.class);
+			long counter = (long) countMoreDataMethod.invoke(daoEnvi, new Object[]{false});
+			return counter;
+		}catch (ReflectiveOperationException e) {
+			return 1l;
+		}
+	}
 
 	/*
 	 * (non-Javadoc)

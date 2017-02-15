@@ -3,10 +3,6 @@
  */
 package com.teknei.persistence.dao;
 
-import java.util.List;
-
-import org.springframework.data.repository.CrudRepository;
-
 import com.teknei.persistence.entities.envi.EnviSbopAsgnTurn;
 import com.teknei.persistence.entities.envi.EnviSbopAsgnTurnPK;
 
@@ -17,12 +13,6 @@ import com.teknei.persistence.entities.envi.EnviSbopAsgnTurnPK;
  * @since 1.0.0
  *
  */
-public interface SbopAsgnTurnEnviDAO extends CrudRepository<EnviSbopAsgnTurn, EnviSbopAsgnTurnPK> {
+public interface SbopAsgnTurnEnviDAO extends CrudRepositoryEnvi<EnviSbopAsgnTurn, EnviSbopAsgnTurnPK> {
 
-	/**
-	 * Finds first 50 records missing for reply process ordered by date ASC
-	 * @param bolEnvi - should send false
-	 * @return - the list of records
-	 */
-	public List<EnviSbopAsgnTurn> findTop50ByBolEnviOrderByFchEnviAsc(boolean bolEnvi);
 }
