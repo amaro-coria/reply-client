@@ -14,6 +14,7 @@ import com.teknei.dto.CaupTranDTO;
 import com.teknei.dto.ResponseDTO;
 import com.teknei.dto.SbopAcceSaliDTO;
 import com.teknei.dto.SbopAsgnTurnDTO;
+import com.teknei.dto.SbopContAcceDTO;
 import com.teknei.dto.SbopRecaDTO;
 import com.teknei.dto.SbopRecaDiviDTO;
 import com.teknei.dto.SbopTranDTO;
@@ -114,7 +115,7 @@ public interface ApiClient {
 	 * @return the remote response
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "cont/save")
-	ResponseDTO sendContAcceRecords(@RequestBody List<SbopRecaDiviDTO> list);
+	ResponseDTO sendContAcceRecords(@RequestBody List<SbopContAcceDTO> list);
 
 	
 	/**

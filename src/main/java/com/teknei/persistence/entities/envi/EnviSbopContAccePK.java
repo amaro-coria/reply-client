@@ -17,12 +17,13 @@ public class EnviSbopContAccePK implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@Column(name = "id_cont_acce", nullable = false)
-	private int idContAcce;
-	@Column(name = "id_turn", nullable = false)
-	private int idTurn;
-	@Column(name = "id_equi", nullable = false)
-	private int idEqui;
-
+	@Column(name = "id_cont_acce")
+	private Integer idContAcce;
+	
+	@Column(name = "id_turn")
+	private Integer idTurn;
+	
+	@Column(name = "id_equi")
+	private Integer idEqui;
 
 }

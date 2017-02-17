@@ -15,5 +15,11 @@ tkn:
     hierarchy: false
   reply:
     rate: 30000
+    status:
+      file: /home/teknei/SITM/CONFIG/somefile.log
 server:
   port: 9090
+  compression:
+    enabled: true
+    mime-types: text/html,text/css,application/javascript,application/json
+  

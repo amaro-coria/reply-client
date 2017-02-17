@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 
 /**
  * Interface for CRUD operations related to envi scheme classes
@@ -15,6 +16,7 @@ import org.springframework.data.repository.CrudRepository;
  * @param <T> - Envi scheme class
  * @param <ID> - ID primary key of the Envi scheme class
  */
+@NoRepositoryBean
 public interface CrudRepositoryEnvi<T, ID extends Serializable> extends CrudRepository<T, ID> {
 	
 	/**
@@ -23,6 +25,13 @@ public interface CrudRepositoryEnvi<T, ID extends Serializable> extends CrudRepo
 	 * @return the records list
 	 */
 	public List<T> findTop50ByBolEnviOrderByFchEnviAsc(boolean bolEnvi);
+	
+	/**
+	 * Finds first 50 records missing for reply process ordered by date ASC
+	 * @param bolEnvi - should send false
+	 * @return the records list
+	 */
+	public List<T> findTop1000ByBolEnviOrderByFchEnviAsc(boolean bolEnvi);
 	
 	/**
 	 * Counts the remaining records pending to send

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.InvalidPropertyException;
 import org.springframework.beans.PropertyAccessor;
 import org.springframework.beans.PropertyAccessorFactory;
@@ -118,6 +120,17 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 			return 1l;
 		}
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.teknei.service.ReplyService#replyBlockData()
+	 */
+	@Override
+	public ResponseDTO replyBlockData() {
+		ResponseDTO dto = replyDataMeta("findTop1000ByBolEnviOrderByFchEnviAsc");
+		return dto;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -126,13 +139,18 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 	 */
 	@Override
 	public ResponseDTO replyData() {
+		ResponseDTO dto = replyDataMeta("findTop50ByBolEnviOrderByFchEnviAsc");
+		return dto;
+	}
+	
+	private ResponseDTO replyDataMeta(String methodName) {
 		try {
 			// Declares a list of EnviPK records
 			List<EnviID> listEnviID = new ArrayList<>();
 			// Obtains runtime class for Envi object
 			Class<?> clazzEnviDAOImpl = daoEnvi.getClass();
 			// Obtain method reference
-			Method findTop50 = clazzEnviDAOImpl.getMethod("findTop50ByBolEnviOrderByFchEnviAsc", boolean.class);
+			Method findTop50 = clazzEnviDAOImpl.getMethod(methodName, boolean.class);
 			// Invoke and obtain
 			List<Envi> listEnvi = (List<Envi>) findTop50.invoke(daoEnvi, new Object[] { false });
 			List<Disp> listDisp = listEnvi.stream().map(e -> {
@@ -175,7 +193,7 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 			// Obtain method reference to API
 			List<DTO> listDTOToSend = new ArrayList<>();
 			if(CollectionUtils.isEmpty(listDTO)){
-				return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+				return new ResponseDTO(UtilConstants.STATUS_OK, UtilConstants.MESSAGE_OK);
 			}
 			listDTO.forEach(d -> {
 				if(d != null){

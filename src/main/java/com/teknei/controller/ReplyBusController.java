@@ -3,6 +3,8 @@
  */
 package com.teknei.controller;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.teknei.dto.ReplyStatusDTO;
 import com.teknei.dto.ResponseDTO;
+import com.teknei.service.FileStatusService;
 import com.teknei.service.ReplyServiceImpl;
 import com.teknei.service.ReplyServiceInvoker;
 import com.teknei.util.ReplyOptions;
@@ -39,12 +43,22 @@ public class ReplyBusController {
 	 */
 	@Autowired
 	private ReplyServiceInvoker serviceInvoker;
+	@Autowired
+	private FileStatusService serviceStatus;
 	@Value("${tkn.api.fail-fast}")
 	private boolean failFast;
 	@Value("${tkn.api.hierarchy}")
 	private boolean hierarchy;
 
 	private static final Logger log = LoggerFactory.getLogger(ReplyBusController.class);
+
+	/**
+	 * Post-construct for delete file on startup
+	 */
+	@PostConstruct
+	private void postConstruct() {
+		serviceStatus.deleteStatusFile();
+	}
 
 	/**
 	 * Entry point for reply bus processes
@@ -58,13 +72,17 @@ public class ReplyBusController {
 
 	/**
 	 * Business method for replication of remaining records
-	 * <pre>Enables async processes </pre>
+	 * 
+	 * <pre>
+	 * Enables async processes
+	 * </pre>
 	 */
 	@Async
 	private void replyData() {
-		log.debug("Reply time init: {}", System.currentTimeMillis());
+		log.info("Reply time init: {}", System.currentTimeMillis());
 		replyBusData();
-		log.debug("Reply time end: {}", System.currentTimeMillis());
+		callReplyStatus(ReplyOptions.STATUS_FINISHED, 0);
+		log.info("Reply time end: {}", System.currentTimeMillis());
 	}
 
 	/**
@@ -77,15 +95,45 @@ public class ReplyBusController {
 	 */
 	@SuppressWarnings("rawtypes")
 	private void replyBusDataForService(ReplyServiceImpl service, ReplyOptions option) {
+		long counterRemaining = service.countMoreData();
+		if (!(counterRemaining > 0)) {
+			log.info("No data remaining for option: {}", option);
+			return;
+		}
+		log.info("Data remaining : {} for option: {}", counterRemaining, option);
+		callReplyStatus(option, counterRemaining);
+		if (option.equals(ReplyOptions.SFMO_HIST)) {
+			replyBusSfmo(service, option);
+			return;
+		}
 		ResponseDTO d = service.replyData();
 		if (!d.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
 			log.error("Error replicating data: {}", option);
 			replyBusDataForService(service, option);
 		}
+		replyBusDataForService(service, option);
+
+	}
+
+	private void callReplyStatus(ReplyOptions optionActive, long counter) {
+		ReplyStatusDTO status = new ReplyStatusDTO();
+		status.setRemaining(counter);
+		status.setReplyOption(optionActive);
+		serviceStatus.writeStatusFile(status);
+	}
+
+	@SuppressWarnings("rawtypes")
+	private void replyBusSfmo(ReplyServiceImpl service, ReplyOptions option) {
+		ResponseDTO d = service.replyBlockData();
+		if (!d.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
+			log.error("Error replicating data: {}", option);
+			replyBusSfmo(service, option);
+		}
 		long counterRemaining = service.countMoreData();
 		if (counterRemaining > 0) {
 			log.info("Data remaining : {} for option: {}", counterRemaining, option);
-			replyBusDataForService(service, option);
+			callReplyStatus(option, counterRemaining);
+			replyBusSfmo(service, option);
 		}
 	}
 

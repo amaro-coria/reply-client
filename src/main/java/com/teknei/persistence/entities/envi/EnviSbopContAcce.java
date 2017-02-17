@@ -1,16 +1,12 @@
 package com.teknei.persistence.entities.envi;
 // Generated 4/08/2015 05:20:32 PM by Hibernate Tools 4.3.1
 
-import java.util.Date;
+import java.security.Timestamp;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import lombok.Data;
 
@@ -23,20 +19,19 @@ import lombok.Data;
 public class EnviSbopContAcce implements java.io.Serializable {
 
 	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "idContAcce", column = @Column(name = "id_cont_acce", nullable = false)),
-			@AttributeOverride(name = "idTurn", column = @Column(name = "id_turn", nullable = false)),
-			@AttributeOverride(name = "idEqui", column = @Column(name = "id_equi", nullable = false)) })
 	private EnviSbopContAccePK id;
-	@Column(name = "bol_envi", nullable = false)
+	
+	@Column(name = "bol_envi")
 	private boolean bolEnvi;
+	
 	@Column(name = "id_envi")
 	private Integer idEnvi;
-	@Column(name = "cod_envi", length = 20)
+	
+	@Column(name = "cod_envi")
 	private String codEnvi;
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "fch_envi", nullable = false, length = 29)
-	private Date fchEnvi;
+	
+	@Column(name = "fch_envi")
+	private Timestamp fchEnvi;
 
 
 }

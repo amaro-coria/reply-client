@@ -13,6 +13,7 @@ import com.teknei.dto.CaupTranDTO;
 import com.teknei.dto.ResponseDTO;
 import com.teknei.dto.SbopAcceSaliDTO;
 import com.teknei.dto.SbopAsgnTurnDTO;
+import com.teknei.dto.SbopContAcceDTO;
 import com.teknei.dto.SbopRecaDTO;
 import com.teknei.dto.SbopRecaDiviDTO;
 import com.teknei.dto.SbopTranDTO;
@@ -125,7 +126,7 @@ public class ApiClientFailureHandler implements ApiClient {
 	 * com.teknei.service.client.ApiClient#sendContAcceRecords(java.util.List)
 	 */
 	@Override
-	public ResponseDTO sendContAcceRecords(List<SbopRecaDiviDTO> list) {
+	public ResponseDTO sendContAcceRecords(List<SbopContAcceDTO> list) {
 		log.error("Error sending contAcce records to API");
 		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
 	}

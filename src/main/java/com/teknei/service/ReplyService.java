@@ -21,6 +21,12 @@ public interface ReplyService {
 	ResponseDTO replyData();
 	
 	/**
+	 * Replicate the local data to the remote API (bigger blocks)
+	 * @return DTO containing the status code of the operation
+	 */
+	ResponseDTO replyBlockData();
+	
+	/**
 	 * Counts the remaining records to send via API
 	 * @return 0 if no remaining, the total otherwise
 	 */

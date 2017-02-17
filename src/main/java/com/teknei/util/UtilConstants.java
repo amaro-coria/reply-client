@@ -24,4 +24,5 @@ public class UtilConstants {
 	public static final String REPLY_SERVICE_QUALIFIER_TURN = "REPLY_TURN_SERVICE_Q";
 	public static final String REPLY_SERVICE_QUALIFIER_ASGN_TURN = "REPLY_ASGN_TURN_SERVICE_Q";
 	public static final String NOT_FOUND="NOT_FOUND";
+	public static final String NOT_APPLICABLE="NA";
 }
