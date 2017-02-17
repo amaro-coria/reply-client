@@ -128,7 +128,7 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 	 */
 	@Override
 	public ResponseDTO replyBlockData() {
-		ResponseDTO dto = replyDataMeta("findTop1000ByBolEnviOrderByFchEnviAsc");
+		ResponseDTO dto = replyDataMeta("findTop500ByBolEnviOrderByFchEnviAsc");
 		return dto;
 	}
 
@@ -143,6 +143,11 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 		return dto;
 	}
 	
+	/**
+	 * General invoker for reply data to remote API
+	 * @param methodName - the method to invoke via reflection
+	 * @return - the DTO wrapping response
+	 */
 	private ResponseDTO replyDataMeta(String methodName) {
 		try {
 			// Declares a list of EnviPK records

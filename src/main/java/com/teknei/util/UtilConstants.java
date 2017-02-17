@@ -21,8 +21,10 @@ public class UtilConstants {
 	public static final String MESSAGE_REFLECTION = "INTERNAL_REFLECTION_ERROR";
 	public static final String STATUS_DATA_ACCESS_EXCEPTION = "10";
 	public static final String MESSAGE_DATA_ACCESS_EXCEPTION = "DATA_ACCESS_EXCEPTION";
+	public static final String STATUS_API_ACCESS_EXCEPTION = "11";
+	public static final String MESSAGE_API_ACCESS_EXCEPTION = "API_ACCESS_EXCEPTION";
 	public static final String REPLY_SERVICE_QUALIFIER_TURN = "REPLY_TURN_SERVICE_Q";
 	public static final String REPLY_SERVICE_QUALIFIER_ASGN_TURN = "REPLY_ASGN_TURN_SERVICE_Q";
-	public static final String NOT_FOUND="NOT_FOUND";
-	public static final String NOT_APPLICABLE="NA";
+	public static final String NOT_FOUND = "NOT_FOUND";
+	public static final String NOT_APPLICABLE = "NA";
 }

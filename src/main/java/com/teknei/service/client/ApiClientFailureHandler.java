@@ -47,7 +47,7 @@ public class ApiClientFailureHandler implements ApiClient {
 	@Override
 	public ResponseDTO sendTurnRecords(List<SbopTurnDTO> list) {
 		log.error("Error sending turn records to API");
-		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
 	}
 
 	/*
@@ -58,7 +58,7 @@ public class ApiClientFailureHandler implements ApiClient {
 	@Override
 	public ResponseDTO sendAcceRecords(List<SbopAcceSaliDTO> list) {
 		log.error("Error sending access records to API");
-		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
 	}
 
 	/*
@@ -70,7 +70,7 @@ public class ApiClientFailureHandler implements ApiClient {
 	@Override
 	public ResponseDTO sendAsgnTurnRecords(List<SbopAsgnTurnDTO> list) {
 		log.error("Error sending asgnTurn records to API");
-		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
 	}
 
 	/*
@@ -81,7 +81,7 @@ public class ApiClientFailureHandler implements ApiClient {
 	@Override
 	public ResponseDTO sendTranRecords(List<SbopTranDTO> list) {
 		log.error("Error sending tranRecords records to API");
-		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
 	}
 
 	/*
@@ -93,7 +93,7 @@ public class ApiClientFailureHandler implements ApiClient {
 	@Override
 	public ResponseDTO sendTranDiviRecords(List<SbopTranDiviDTO> list) {
 		log.error("Error sending tranDivi records to API");
-		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
 	}
 
 	/*
@@ -104,7 +104,7 @@ public class ApiClientFailureHandler implements ApiClient {
 	@Override
 	public ResponseDTO sendRecaRecords(List<SbopRecaDTO> list) {
 		log.error("Error sending reca records to API");
-		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
 	}
 
 	/*
@@ -116,7 +116,7 @@ public class ApiClientFailureHandler implements ApiClient {
 	@Override
 	public ResponseDTO sendRecaDiviRecords(List<SbopRecaDiviDTO> list) {
 		log.error("Error sending recaDivi records to API");
-		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
 	}
 
 	/*
@@ -128,7 +128,7 @@ public class ApiClientFailureHandler implements ApiClient {
 	@Override
 	public ResponseDTO sendContAcceRecords(List<SbopContAcceDTO> list) {
 		log.error("Error sending contAcce records to API");
-		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
 	}
 
 	/*
@@ -141,7 +141,7 @@ public class ApiClientFailureHandler implements ApiClient {
 	@Override
 	public ResponseDTO sendSfopEquiAlarRecords(List<SfopEquiAlarDTO> list) {
 		log.error("Error sending sfopEquiAlar records to API");
-		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
 	}
 
 	/*
@@ -153,7 +153,7 @@ public class ApiClientFailureHandler implements ApiClient {
 	@Override
 	public ResponseDTO sendMsgCondRecords(List<SfopMsgCondDTO> list) {
 		log.error("Error sending msgCond records to API");
-		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
 	}
 
 	/*
@@ -164,7 +164,7 @@ public class ApiClientFailureHandler implements ApiClient {
 	@Override
 	public ResponseDTO sendSfruRecords(List<SfruAsgnDTO> list) {
 		log.error("Error sending sfruAsgn records to API");
-		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
 	}
 
 	/*
@@ -175,7 +175,7 @@ public class ApiClientFailureHandler implements ApiClient {
 	@Override
 	public ResponseDTO sendSfvhRecords(List<SfvhDataDiaDTO> list) {
 		log.error("Error sending sfvhDataDia records to API");
-		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
 	}
 
 	/*
@@ -186,7 +186,7 @@ public class ApiClientFailureHandler implements ApiClient {
 	@Override
 	public ResponseDTO sendSfmoRecords(List<SfmoHistReceNaveDTO> list) {
 		log.error("Error sending sfmoHistReceNave records to API");
-		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
 	}
 
 	/* (non-Javadoc)
@@ -195,7 +195,7 @@ public class ApiClientFailureHandler implements ApiClient {
 	@Override
 	public ResponseDTO sendCauRecords(List<CaupTranDTO> list) {
 		log.error("Error sending cauTran records to API");
-		return new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION, UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
 	}
 
 }

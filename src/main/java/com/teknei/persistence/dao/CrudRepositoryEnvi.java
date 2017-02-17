@@ -27,11 +27,19 @@ public interface CrudRepositoryEnvi<T, ID extends Serializable> extends CrudRepo
 	public List<T> findTop50ByBolEnviOrderByFchEnviAsc(boolean bolEnvi);
 	
 	/**
-	 * Finds first 50 records missing for reply process ordered by date ASC
+	 * Finds first 1000 records missing for reply process ordered by date ASC
 	 * @param bolEnvi - should send false
 	 * @return the records list
 	 */
 	public List<T> findTop1000ByBolEnviOrderByFchEnviAsc(boolean bolEnvi);
+	
+	/**
+	 * Finds first 500 records missing for reply process ordered by date ASC
+	 * @param bolEnvi - should send false
+	 * @return the records list
+	 */
+	public List<T> findTop500ByBolEnviOrderByFchEnviAsc(boolean bolEnvi);
+	
 	
 	/**
 	 * Counts the remaining records pending to send
