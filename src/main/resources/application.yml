@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://172.17.0.2/sitm_409
+    url: jdbc:postgresql://localhost/SITM_REPLICA
     username: postgres
     password: admin
   jpa:
@@ -10,16 +10,28 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 tkn:
   api:
-    url: 172.17.1.20:8090/api
+    url: 172.17.0.122:8090/api
     fail-fast: false
     hierarchy: false
   reply:
-    rate: 30000
+    rate: 10000
     status:
-      file: /home/teknei/SITM/CONFIG/somefile.log
+      file: /home/Administrador/SITM/CONFIG/statusfile.log
 server:
   port: 9090
   compression:
     enabled: true
     mime-types: text/html,text/css,application/javascript,application/json
-  
+ 
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 300000  

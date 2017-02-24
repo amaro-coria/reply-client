@@ -128,7 +128,7 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 	 */
 	@Override
 	public ResponseDTO replyBlockData() {
-		ResponseDTO dto = replyDataMeta("findTop500ByBolEnviOrderByFchEnviAsc");
+		ResponseDTO dto = replyDataMeta("findTop1000ByBolEnviOrderByFchEnviAsc");
 		return dto;
 	}
 
