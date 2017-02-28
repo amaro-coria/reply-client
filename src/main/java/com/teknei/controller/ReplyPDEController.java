@@ -83,6 +83,10 @@ public class ReplyPDEController {
 		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_ASGN_TURN).replyData();
 		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_ACCE_SALI).replyData();
 		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_CONT_ACCE).replyData();
+		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TRAN).replyData();
+		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TRAN_DIVI).replyData();
+		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_RECA).replyData();
+		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_RECA_DIVI).replyData();
 		serviceInvoker.getMapReplyServices().get(ReplyOptions.SFMO_HIST).replyBlockData();
 	}
 

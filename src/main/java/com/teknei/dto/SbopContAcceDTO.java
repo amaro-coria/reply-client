@@ -18,6 +18,10 @@ import lombok.Data;
 @Data
 public class SbopContAcceDTO implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	private Integer idContAcce;
 	private Long idTurn;

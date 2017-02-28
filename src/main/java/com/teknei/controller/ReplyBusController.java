@@ -108,7 +108,7 @@ public class ReplyBusController {
 		}
 		ResponseDTO d = service.replyData();
 		if (!d.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
-			log.error("Error replicating data: {}", option);
+			log.error("Error {} replicating data: {}", d.getStatusCode(), option);
 			replyBusDataForService(service, option);
 		}
 		replyBusDataForService(service, option);

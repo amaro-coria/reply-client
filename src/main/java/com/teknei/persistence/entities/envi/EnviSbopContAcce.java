@@ -1,7 +1,8 @@
 package com.teknei.persistence.entities.envi;
 // Generated 4/08/2015 05:20:32 PM by Hibernate Tools 4.3.1
 
-import java.security.Timestamp;
+
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -17,21 +18,21 @@ import lombok.Data;
 @Table(name = "sbop_cont_acce", schema = "sitm_envi")
 @Data
 public class EnviSbopContAcce implements java.io.Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
 	private EnviSbopContAccePK id;
-	
+
 	@Column(name = "bol_envi")
-	private boolean bolEnvi;
-	
-	@Column(name = "id_envi")
-	private Integer idEnvi;
-	
+	private Boolean bolEnvi;
+
 	@Column(name = "cod_envi")
 	private String codEnvi;
-	
+
 	@Column(name = "fch_envi")
 	private Timestamp fchEnvi;
 
+	@Column(name = "id_envi")
+	private Integer idEnvi;
 
 }

@@ -67,6 +67,7 @@ import com.teknei.util.UtilConstants;
  */
 public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID extends Serializable, DTO>
 		implements ReplyService {
+	
 
 	/**
 	 * Args constructor
@@ -111,7 +112,6 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 	@Override
 	public long countMoreData(){
 		try{
-			// Obtains runtime class for Envi object
 			Class<?> clazzEnviDAOImpl = daoEnvi.getClass();
 			Method countMoreDataMethod = clazzEnviDAOImpl.getMethod("countByBolEnvi", boolean.class);
 			long counter = (long) countMoreDataMethod.invoke(daoEnvi, new Object[]{false});
@@ -157,6 +157,7 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 			// Obtain method reference
 			Method findTop50 = clazzEnviDAOImpl.getMethod(methodName, boolean.class);
 			// Invoke and obtain
+			Object o = findTop50.invoke(daoEnvi, new Object[] { false });
 			List<Envi> listEnvi = (List<Envi>) findTop50.invoke(daoEnvi, new Object[] { false });
 			List<Disp> listDisp = listEnvi.stream().map(e -> {
 				// Fills the object via reflection
@@ -172,8 +173,9 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 				PropertyAccessor propertyAccesosDispPK = PropertyAccessorFactory.forBeanPropertyAccess(dispIDObj);
 				Field[] fields = typeDispID.getDeclaredFields();
 				for (Field f : fields) {
+					String name = "";
 					try {
-						String name = f.getName();
+						name = f.getName();
 						if (name.equals("serialVersionUID")) {
 							continue;
 						}
