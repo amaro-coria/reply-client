@@ -3,8 +3,13 @@
  */
 package com.teknei.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import javax.annotation.PostConstruct;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +18,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +29,8 @@ import com.teknei.service.FileStatusService;
 import com.teknei.service.ReplyServiceImpl;
 import com.teknei.service.ReplyServiceInvoker;
 import com.teknei.util.ReplyOptions;
+import com.teknei.util.ReplySpeedOption;
+import com.teknei.util.ReplyStatus;
 import com.teknei.util.UtilConstants;
 
 /**
@@ -49,6 +57,9 @@ public class ReplyBusController {
 	private boolean failFast;
 	@Value("${tkn.api.hierarchy}")
 	private boolean hierarchy;
+	@Value("${tkn.reply.number}")
+	private Integer noTranReply;
+	private ReplySpeedOption replySpeedOption;
 
 	private static final Logger log = LoggerFactory.getLogger(ReplyBusController.class);
 
@@ -58,6 +69,24 @@ public class ReplyBusController {
 	@PostConstruct
 	private void postConstruct() {
 		serviceStatus.deleteStatusFile();
+		checkNoTranReply();
+	}
+
+	/**
+	 * Check reply speed
+	 */
+	private void checkNoTranReply() {
+		replySpeedOption = ReplySpeedOption.REPLY_SPEED_VIA;
+		if (noTranReply <= 50) {
+			replySpeedOption = ReplySpeedOption.REPLY_SPEED_VIA;
+		} else if (noTranReply > 50 && noTranReply <= 500) {
+			replySpeedOption = ReplySpeedOption.REPLY_SPEED_VIA_FAST;
+		} else if (noTranReply > 500 && noTranReply <= 1000) {
+			replySpeedOption = ReplySpeedOption.REPLY_SPEED_CDE;
+		} else if (noTranReply > 1000) {
+			replySpeedOption = ReplySpeedOption.REPLY_SPEED_CDE_FAST;
+		}
+		log.info("Reply speed: {}", replySpeedOption);
 	}
 
 	/**
@@ -65,8 +94,18 @@ public class ReplyBusController {
 	 */
 	@RequestMapping(value = "reply", method = RequestMethod.GET)
 	public ResponseEntity<ResponseDTO> reply() {
+		ResponseDTO dto = null;
+		if (!ReplyStatus.getInstance().isFree()) {
+			dto = new ResponseDTO(UtilConstants.STATUS_API_USAGE_EXCEPTION, UtilConstants.MESSAGE_API_USAGE_EXCEPTION);
+			return new ResponseEntity<ResponseDTO>(dto, HttpStatus.OK);
+		}
 		replyData();
-		ResponseDTO dto = new ResponseDTO(UtilConstants.STATUS_OK, UtilConstants.MESSAGE_OK);
+		if (ReplyStatus.getInstance().isLastStatusWasError()) {
+			dto = new ResponseDTO(UtilConstants.STATUS_DATA_ACCESS_EXCEPTION,
+					UtilConstants.MESSAGE_DATA_ACCESS_EXCEPTION);
+		} else {
+			dto = new ResponseDTO(UtilConstants.STATUS_OK, UtilConstants.MESSAGE_OK);
+		}
 		return new ResponseEntity<ResponseDTO>(dto, HttpStatus.OK);
 	}
 
@@ -79,10 +118,12 @@ public class ReplyBusController {
 	 */
 	@Async
 	private void replyData() {
+		ReplyStatus.getInstance().setFree(false);
 		log.info("Reply time init: {}", System.currentTimeMillis());
 		replyBusData();
 		callReplyStatus(ReplyOptions.STATUS_FINISHED, 0);
 		log.info("Reply time end: {}", System.currentTimeMillis());
+		ReplyStatus.getInstance().setFree(true);
 	}
 
 	/**
@@ -106,13 +147,32 @@ public class ReplyBusController {
 			replyBusSfmo(service, option);
 			return;
 		}
-		ResponseDTO d = service.replyData();
+		ResponseDTO d = service.replyData(replySpeedOption);
 		if (!d.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
 			log.error("Error {} replicating data: {}", d.getStatusCode(), option);
-			replyBusDataForService(service, option);
+			if (canContinue()) {
+				replyBusDataForService(service, option);
+			} else {
+				log.error("Maximum error counter reached, aborting");
+				setLastStatusError();
+				return;
+			}
 		}
 		replyBusDataForService(service, option);
 
+	}
+
+	private boolean canContinue() {
+		ReplyStatus.getInstance().addError();
+		if (ReplyStatus.getInstance().getErrorCounter() >= 5) {
+			return false;
+		}
+		return true;
+	}
+
+	private void setLastStatusError() {
+		ReplyStatus.getInstance().setLastStatusWasError(true);
+		ReplyStatus.getInstance().setFree(true);
 	}
 
 	private void callReplyStatus(ReplyOptions optionActive, long counter) {
@@ -127,7 +187,13 @@ public class ReplyBusController {
 		ResponseDTO d = service.replyBlockData();
 		if (!d.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
 			log.error("Error replicating data: {}", option);
-			replyBusSfmo(service, option);
+			if (canContinue()) {
+				replyBusSfmo(service, option);
+			} else {
+				log.error("Maximum error counter reached, aborting");
+				setLastStatusError();
+				return;
+			}
 		}
 		long counterRemaining = service.countMoreData();
 		if (counterRemaining > 0) {

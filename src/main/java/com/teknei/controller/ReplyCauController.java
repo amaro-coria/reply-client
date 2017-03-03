@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import com.teknei.dto.ResponseDTO;
 import com.teknei.service.ReplyServiceInvoker;
 import com.teknei.util.ReplyOptions;
+import com.teknei.util.ReplySpeedOption;
 import com.teknei.util.UtilConstants;
 
 /**
@@ -39,6 +40,9 @@ public class ReplyCauController {
 	private boolean failFast;
 	@Value("${tkn.api.hierarchy}")
 	private boolean hierarchy;
+	@Value("${tkn.reply.number}")
+	private Integer noTranReply;
+	private ReplySpeedOption replySpeedOption;
 
 	private static final Logger log = LoggerFactory.getLogger(ReplyCauController.class);
 
@@ -59,6 +63,23 @@ public class ReplyCauController {
 		} else {
 			log.info("Reply in mode noFail");
 		}
+		checkNoTranReply();
+	}
+	/**
+	 * Check reply speed 
+	 */
+	private void checkNoTranReply() {
+		replySpeedOption = ReplySpeedOption.REPLY_SPEED_VIA;
+		if (noTranReply <= 50) {
+			replySpeedOption = ReplySpeedOption.REPLY_SPEED_VIA;
+		} else if (noTranReply > 50 && noTranReply <= 500) {
+			replySpeedOption = ReplySpeedOption.REPLY_SPEED_VIA_FAST;
+		} else if (noTranReply > 500 && noTranReply <= 1000) {
+			replySpeedOption = ReplySpeedOption.REPLY_SPEED_CDE;
+		} else if (noTranReply > 1000) {
+			replySpeedOption = ReplySpeedOption.REPLY_SPEED_CDE_FAST;
+		}
+		log.info("Reply speed: {}", replySpeedOption);
 	}
 
 	/**
@@ -79,8 +100,8 @@ public class ReplyCauController {
 	 * Reply data regardless fails
 	 */
 	private void replyDataNoFail() {
-		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TURN).replyData();
-		serviceInvoker.getMapReplyServices().get(ReplyOptions.CAUP_TRAN).replyData();
+		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TURN).replyData(replySpeedOption);
+		serviceInvoker.getMapReplyServices().get(ReplyOptions.CAUP_TRAN).replyData(replySpeedOption);
 	}
 
 	/**
@@ -88,12 +109,12 @@ public class ReplyCauController {
 	 */
 	private void replyDataHierarchy() {
 		ResponseDTO response = null;
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TURN).replyData();
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TURN).replyData(replySpeedOption);
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
 			log.error("Reply aborted at turn, error detected. Continue from the beginnig");
 			return;
 		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.CAUP_TRAN).replyData();
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.CAUP_TRAN).replyData(replySpeedOption);
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
 			log.error("Reply aborted at cauTran, error detected. Continue from the beginnig");
 			return;
@@ -107,12 +128,12 @@ public class ReplyCauController {
 	 */
 	private void replyDataFailFast() {
 		ResponseDTO response = null;
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TURN).replyData();
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TURN).replyData(replySpeedOption);
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
 			log.warn("Reply aborted at turn, error detected. Continue from the beginnig");
 			return;
 		}
-		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.CAUP_TRAN).replyData();
+		response = serviceInvoker.getMapReplyServices().get(ReplyOptions.CAUP_TRAN).replyData(replySpeedOption);
 		if (!response.getStatusCode().equalsIgnoreCase(UtilConstants.STATUS_OK)) {
 			log.warn("Reply aborted at cauTran, error detected. Continue from the beginnig");
 			return;

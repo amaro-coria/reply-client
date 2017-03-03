@@ -7,11 +7,10 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.InvalidPropertyException;
 import org.springframework.beans.PropertyAccessor;
 import org.springframework.beans.PropertyAccessorFactory;
@@ -21,6 +20,7 @@ import org.springframework.util.CollectionUtils;
 import com.teknei.dto.ResponseDTO;
 import com.teknei.service.assembler.Assembler;
 import com.teknei.service.client.ApiClient;
+import com.teknei.util.ReplySpeedOption;
 import com.teknei.util.UtilConstants;
 
 /**
@@ -67,7 +67,6 @@ import com.teknei.util.UtilConstants;
  */
 public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID extends Serializable, DTO>
 		implements ReplyService {
-	
 
 	/**
 	 * Args constructor
@@ -105,22 +104,46 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 	private Assembler<DTO, Disp> assembler;
 	private String nameApiMethod;
 	private ApiClient apiClient;
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.teknei.service.ReplyService#countMoreData()
 	 */
 	@Override
-	public long countMoreData(){
-		try{
+	public long countMoreData() {
+		try {
 			Class<?> clazzEnviDAOImpl = daoEnvi.getClass();
 			Method countMoreDataMethod = clazzEnviDAOImpl.getMethod("countByBolEnvi", boolean.class);
-			long counter = (long) countMoreDataMethod.invoke(daoEnvi, new Object[]{false});
+			long counter = (long) countMoreDataMethod.invoke(daoEnvi, new Object[] { false });
 			return counter;
-		}catch (ReflectiveOperationException e) {
+		} catch (ReflectiveOperationException e) {
 			return 1l;
 		}
 	}
 	
+	@Override
+	public long countDataForDay(Date startDate, Date endDate){
+		try {
+			Class<?> clazzEnviDAOImpl = daoEnvi.getClass();
+			Method countMoreDataMethod = clazzEnviDAOImpl.getMethod("countByBolEnviAndFchEnviBetween", boolean.class, Date.class, Date.class);
+			long counter = (long) countMoreDataMethod.invoke(daoEnvi, new Object[] { true , startDate, endDate });
+			return counter;
+		} catch (ReflectiveOperationException e) {
+			return -1l;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.teknei.service.ReplyService#replyData(com.teknei.util.ReplySpeedOption)
+	 */
+	@Override
+	public ResponseDTO replyData(ReplySpeedOption replySpeed) {
+		ResponseDTO dto = replyDataMeta(replySpeed.getMethodName());
+		return dto;
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -129,6 +152,9 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 	@Override
 	public ResponseDTO replyBlockData() {
 		ResponseDTO dto = replyDataMeta("findTop1000ByBolEnviOrderByFchEnviAsc");
+		if(dto != null && dto.getStatusCode().equals(UtilConstants.STATUS_OK)){
+			dto = replyDataMeta("findTop1000ByBolEnviOrderByFchEnviDesc");
+		}
 		return dto;
 	}
 
@@ -142,10 +168,12 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 		ResponseDTO dto = replyDataMeta("findTop50ByBolEnviOrderByFchEnviAsc");
 		return dto;
 	}
-	
+
 	/**
 	 * General invoker for reply data to remote API
-	 * @param methodName - the method to invoke via reflection
+	 * 
+	 * @param methodName
+	 *            - the method to invoke via reflection
 	 * @return - the DTO wrapping response
 	 */
 	private ResponseDTO replyDataMeta(String methodName) {
@@ -199,11 +227,11 @@ public class ReplyServiceImpl<Envi, EnviID extends Serializable, Disp, DispID ex
 			List<DTO> listDTO = listDisp.stream().map(d -> assembler.getDTO(d)).collect(Collectors.toList());
 			// Obtain method reference to API
 			List<DTO> listDTOToSend = new ArrayList<>();
-			if(CollectionUtils.isEmpty(listDTO)){
+			if (CollectionUtils.isEmpty(listDTO)) {
 				return new ResponseDTO(UtilConstants.STATUS_OK, UtilConstants.MESSAGE_OK);
 			}
 			listDTO.forEach(d -> {
-				if(d != null){
+				if (d != null) {
 					listDTOToSend.add(d);
 				}
 			});

@@ -3,7 +3,10 @@
  */
 package com.teknei.service;
 
+import java.util.Date;
+
 import com.teknei.dto.ResponseDTO;
+import com.teknei.util.ReplySpeedOption;
 
 /**
  * Business generic interface
@@ -31,5 +34,14 @@ public interface ReplyService {
 	 * @return 0 if no remaining, the total otherwise
 	 */
 	long countMoreData();
+
+	/**
+	 * Replicates the data according to the speed provided
+	 * @param replySpeed - the name of the speed provided
+	 * @return DTO containing the status code of the operation
+	 */
+	ResponseDTO replyData(ReplySpeedOption replySpeed);
+
+	long countDataForDay(Date startDate, Date endDate);
 
 }
