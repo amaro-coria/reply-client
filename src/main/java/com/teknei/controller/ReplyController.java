@@ -1,3 +1,6 @@
+/**
+ * Teknei 2016
+ */
 package com.teknei.controller;
 
 import java.util.ArrayList;
@@ -15,13 +18,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.teknei.dto.ResponseDTO;
-import com.teknei.service.FileStatusService;
 import com.teknei.service.ReplyServiceImpl;
 import com.teknei.service.ReplyServiceInvoker;
 import com.teknei.util.ReplyOptions;
-import com.teknei.util.ReplySpeedOption;
 import com.teknei.util.UtilConstants;
 
+/**
+ * Controller for count transactions
+ * 
+ * @author Jorge Amaro
+ * @version 1.0.0
+ * @since 1.0.0
+ *
+ */
 @RestController
 @RequestMapping("/api")
 public class ReplyController {
@@ -31,16 +40,27 @@ public class ReplyController {
 	 */
 	@Autowired
 	private ReplyServiceInvoker serviceInvoker;
-	@Autowired
-	private FileStatusService serviceStatus;
 	@Value("${tkn.api.fail-fast}")
 	private boolean failFast;
 	@Value("${tkn.api.hierarchy}")
 	private boolean hierarchy;
 	@Value("${tkn.reply.number}")
 	private Integer noTranReply;
-	private ReplySpeedOption replySpeedOption;
 
+	/**
+	 * Counts the total of the records according to the given options
+	 * 
+	 * @param startDate
+	 *            - the startDate of the synchronization process - [Optional, if
+	 *            no parameter given yesterday is taken]
+	 * @param endDate
+	 *            - the endDate of the synchronization process - [Optional, if
+	 *            no parameter given yesterday is taken]
+	 * @param apiOption
+	 *            - the apiOption given - [Optional, if no parameter given, all
+	 *            options taken]
+	 * @return
+	 */
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = { "count", "count/{startDate}", "count/{startDate}/{endDate}",
 			"count/{startDate}/{endDate}/{apiOption}" }, method = RequestMethod.GET)

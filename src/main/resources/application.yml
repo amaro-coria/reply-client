@@ -10,7 +10,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 tkn:
   api:
-    url: 172.17.0.122:8090/api
+    url: 127.0.0.1:8090/api
     fail-fast: false
     hierarchy: false
   reply:

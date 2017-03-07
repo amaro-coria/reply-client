@@ -7,8 +7,11 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Interface for CRUD operations related to envi scheme classes
@@ -104,6 +107,30 @@ public interface CrudRepositoryEnvi<T, ID extends Serializable> extends CrudRepo
 	 */
 	public Long countByBolEnvi(boolean bolEnvi);
 
+	/**
+	 * Counts the records according to the parameters
+	 * 
+	 * @param bolEnvi
+	 *            - the boolean status
+	 * @param startDate
+	 *            - the start date of the between
+	 * @param endDate
+	 *            - the end date of the between
+	 * @return - The total of the matches
+	 */
 	public Long countByBolEnviAndFchEnviBetween(boolean bolEnvi, Date startDate, Date endDate);
+
+	/**
+	 * Updates the records within the given dates and set's its flag to false
+	 * 
+	 * @param startDate
+	 *            - the start date of the between
+	 * @param endDate
+	 *            - the end date of the between
+	 */
+	@Transactional
+	@Modifying
+	@Query("update #{#entityName} e set e.bolEnvi = false where e.fchEnvi between ?1 and ?2")
+	public void setBolEnviFalseByFchEnviBetween(Date startDate, Date endDate);
 
 }

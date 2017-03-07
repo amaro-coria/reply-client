@@ -6,9 +6,6 @@ import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -70,19 +67,13 @@ public class SbeqEqui implements Serializable {
 	@Column(name="usr_modi")
 	private String usrModi;
 
-	//uni-directional many-to-one association to CctmCata
-	@ManyToOne
-	@JoinColumn(name="id_edo_equi")
-	private CctmCata cctmCata1;
+	@Column(name="id_edo_equi")
+	private Integer idEdoEqui;
 
-	//uni-directional many-to-one association to CctmCata
-	@ManyToOne
-	@JoinColumn(name="id_esta")
-	private CctmCata cctmCata2;
+	@Column(name="id_esta")
+	private Integer idEsta;
 
-	//uni-directional many-to-one association to CctmCata
-	@ManyToOne
-	@JoinColumn(name="id_mod")
-	private CctmCata cctmCata3;
+	@Column(name="id_mod")
+	private Integer idMod;
 
 }
