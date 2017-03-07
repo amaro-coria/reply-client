@@ -21,7 +21,7 @@ import com.teknei.dto.ResponseDTO;
  * @since 1.0.0
  *
  */
-@FeignClient(url = "${tkn.api.url}", name = "apiVerifierClient")
+@FeignClient(url = "${tkn.api.url}", name = "apiVerifierClient", fallback = VerifierClientFailureHandler.class)
 public interface VerifierClient {
 
 	/**

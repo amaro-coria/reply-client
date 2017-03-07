@@ -168,7 +168,8 @@ public class ReplyVerifierServiceInvoker {
 				enDate = new DateTime(startDate.get()).plusDays(1).withTimeAtStartOfDay().minusMillis(1);
 			}
 		} else {
-			stDate = new DateTime().withTimeAtStartOfDay();
+			stDate = new DateTime().withTimeAtStartOfDay().minusDays(1);
+			enDate = new DateTime().withTimeAtStartOfDay().minusMillis(1);
 		}
 		if (listResponse != null && !listResponse.isEmpty()) {
 			final Date sDate = stDate.toDate();

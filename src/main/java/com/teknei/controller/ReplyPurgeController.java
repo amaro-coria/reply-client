@@ -4,7 +4,6 @@
 package com.teknei.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +24,8 @@ import com.teknei.util.UtilConstants;
  *
  */
 @RestController
-@RequestMapping("/api/bus")
-@Profile("bus")
-public class ReplyBusController {
+@RequestMapping("/api/purge")
+public class ReplyPurgeController {
 
 	/*
 	 * Injected elements
@@ -56,7 +54,7 @@ public class ReplyBusController {
 	}
 
 	/**
-	 * Business method for replication of remaining records
+	 * Business method for call replication of remaining records
 	 * 
 	 */
 	private void replyData() {
