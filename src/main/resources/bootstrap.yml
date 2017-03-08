@@ -5,4 +5,4 @@ spring:
     config:
       uri: http://172.17.0.140:8001
   profiles:
-    active: aca_pde
+    active: pde

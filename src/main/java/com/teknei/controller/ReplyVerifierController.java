@@ -61,7 +61,7 @@ public class ReplyVerifierController {
 	 * Invokes the sync process for no date (in order to process all for
 	 * yesterday). Fires everyday at 2am
 	 */
-	@Scheduled(cron = "0 0 2 1/1 * ? *")
+	@Scheduled(cron = "0 0 2 1/1 * ?")
 	public void invokeDayli() {
 		serviceInvoker.verify(Optional.empty(), Optional.empty(), Optional.empty());
 		serviceReplyPurge.replyData();

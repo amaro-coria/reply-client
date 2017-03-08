@@ -109,6 +109,7 @@ public class ReplyPDEController {
 		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_TRAN_DIVI).replyData(replySpeedOption);
 		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_RECA).replyData(replySpeedOption);
 		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_RECA_DIVI).replyData(replySpeedOption);
+		serviceInvoker.getMapReplyServices().get(ReplyOptions.SBOP_CONT_REPL).replyData(replySpeedOption);
 		serviceInvoker.getMapReplyServices().get(ReplyOptions.SFMO_HIST).replyBlockData();
 	}
 

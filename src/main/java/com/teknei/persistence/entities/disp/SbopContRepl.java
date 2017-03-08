@@ -22,7 +22,7 @@ public class SbopContRepl implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private SbopContReplPK id;
+	private SbopContReplPK pk;
 
 	@Column(name="fch_crea")
 	private Timestamp fchCrea;

@@ -9,6 +9,7 @@ import com.teknei.dto.CaupTranDTO;
 import com.teknei.dto.SbopAcceSaliDTO;
 import com.teknei.dto.SbopAsgnTurnDTO;
 import com.teknei.dto.SbopContAcceDTO;
+import com.teknei.dto.SbopContReplDTO;
 import com.teknei.dto.SbopRecaDTO;
 import com.teknei.dto.SbopRecaDiviDTO;
 import com.teknei.dto.SbopTranDTO;
@@ -23,6 +24,7 @@ import com.teknei.persistence.entities.disp.CaupTran;
 import com.teknei.persistence.entities.disp.SbopAcceSali;
 import com.teknei.persistence.entities.disp.SbopAsgnTurn;
 import com.teknei.persistence.entities.disp.SbopContAcce;
+import com.teknei.persistence.entities.disp.SbopContRepl;
 import com.teknei.persistence.entities.disp.SbopReca;
 import com.teknei.persistence.entities.disp.SbopRecaDivi;
 import com.teknei.persistence.entities.disp.SbopTran;
@@ -169,6 +171,15 @@ public class TKNAssembler {
 	 */
 	public Assembler<CaupTranDTO, CaupTran> getAssemblerCaupTran() {
 		return new Assembler<>(CaupTranDTO.class, CaupTran.class);
+	}
+	
+	/**
+	 * Returns {@code Assembler} for SbopContRepl related classes
+	 * 
+	 * @return the assembler built
+	 */
+	public Assembler<SbopContReplDTO, SbopContRepl> getAssemblerContRepl(){
+		return new Assembler<>(SbopContReplDTO.class, SbopContRepl.class);
 	}
 
 }

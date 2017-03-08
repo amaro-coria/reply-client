@@ -15,6 +15,7 @@ import com.teknei.dto.ResponseDTO;
 import com.teknei.dto.SbopAcceSaliDTO;
 import com.teknei.dto.SbopAsgnTurnDTO;
 import com.teknei.dto.SbopContAcceDTO;
+import com.teknei.dto.SbopContReplDTO;
 import com.teknei.dto.SbopRecaDTO;
 import com.teknei.dto.SbopRecaDiviDTO;
 import com.teknei.dto.SbopTranDTO;
@@ -177,4 +178,14 @@ public interface ApiClient {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "cau/save")
 	ResponseDTO sendCauRecords(@RequestBody List<CaupTranDTO> list);
+	
+	/**
+	 * Method for send collection of DTO records to the remote API via REST
+	 * 
+	 * @param list
+	 *            the collection to send
+	 * @return the remote response
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "contRepl/save")
+	ResponseDTO sendContReplRecords(@RequestBody List<SbopContReplDTO> list);
 }

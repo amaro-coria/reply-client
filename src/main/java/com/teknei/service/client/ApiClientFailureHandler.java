@@ -14,6 +14,7 @@ import com.teknei.dto.ResponseDTO;
 import com.teknei.dto.SbopAcceSaliDTO;
 import com.teknei.dto.SbopAsgnTurnDTO;
 import com.teknei.dto.SbopContAcceDTO;
+import com.teknei.dto.SbopContReplDTO;
 import com.teknei.dto.SbopRecaDTO;
 import com.teknei.dto.SbopRecaDiviDTO;
 import com.teknei.dto.SbopTranDTO;
@@ -195,6 +196,12 @@ public class ApiClientFailureHandler implements ApiClient {
 	@Override
 	public ResponseDTO sendCauRecords(List<CaupTranDTO> list) {
 		log.error("Error sending cauTran records to API");
+		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
+	}
+
+	@Override
+	public ResponseDTO sendContReplRecords(List<SbopContReplDTO> list) {
+		log.error("Error sending contRepl records to API");
 		return new ResponseDTO(UtilConstants.STATUS_API_ACCESS_EXCEPTION, UtilConstants.MESSAGE_API_ACCESS_EXCEPTION);
 	}
 
