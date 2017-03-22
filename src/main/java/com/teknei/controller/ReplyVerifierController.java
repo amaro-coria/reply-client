@@ -71,7 +71,7 @@ public class ReplyVerifierController {
 	 * Invokes the sync process every Sunday for the records of the week. Fires
 	 * at Sunday 1am
 	 */
-	@Scheduled(cron = "0 0 1 ? * SUN *")
+	@Scheduled(cron = "0 0 1 ? * SUN")
 	public void invokeWeekly() {
 		DateTime startDate = new DateTime().withTimeAtStartOfDay().withDayOfWeek(DateTimeConstants.MONDAY);
 		DateTime endDate = new DateTime().withTimeAtStartOfDay().minusMillis(1);
