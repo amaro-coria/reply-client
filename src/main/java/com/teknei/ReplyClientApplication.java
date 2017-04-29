@@ -52,7 +52,7 @@ public class ReplyClientApplication {
 				log.info("TKN_VERSION:{}", "1.0.0");
 				System.exit(0);
 			} else if (args[0].equalsIgnoreCase("-r")) {
-				log.info("Runnig to listen to reply");
+				log.info("Running to listen to reply");
 				reply = true;
 			} else if (args[0].equalsIgnoreCase("-t")) {
 				log.debug("TKN Unit testing");

@@ -23,6 +23,8 @@ public class SbopContReplDTO implements Serializable{
 	private Integer regPendEnvi;
 	private String usrCrea;
 	private String usrModi;
-
+	private Integer actuPendEnvi;
+	private String detaTipoRepl;
+    private String obsContRepl;
 	
 }
