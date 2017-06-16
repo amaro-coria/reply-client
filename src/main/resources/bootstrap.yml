@@ -3,6 +3,6 @@ spring:
     name: reply-client
   cloud:
     config:
-      uri: http://192.168.1.235:8001
+      uri: http://172.17.0.122:8001
   profiles:
-    active: pde
+    active: via, tor, desconocido

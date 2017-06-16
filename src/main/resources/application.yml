@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://172.17.0.2/sitm_409
+    url: jdbc:postgresql://localhost/SITM
     username: postgres
     password: admin
   jpa:
@@ -10,7 +10,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 tkn:
   api:
-    url: 127.0.0.1:8090/api
+    url: 172.17.0.122:8090/api
     fail-fast: false
     hierarchy: false
   reply:
@@ -26,8 +26,8 @@ server:
  
 eureka:
   client:
-    registerWithEureka: false
-    fetchRegistry: false
+    registerWithEureka: true
+    fetchRegistry: true
     
 hystrix:
   command:
