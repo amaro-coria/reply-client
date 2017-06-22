@@ -3,21 +3,21 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost/SITM
     username: postgres
-    password: admin
+    password: 4c4t3k
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 tkn:
   api:
-    url: 172.17.0.122:8090/api
+    url: 172.17.0.122:8090/tkn-api/reply-server/api
     fail-fast: false
     hierarchy: false
   reply:
     number: 500
     rate: 10000
     status:
-      file: /home/Administrador/SITM/CONFIG/statusfile.log
+      file: /home/teknei/SITM/CONFIG/statusfile.log
 server:
   port: 9090
   compression:
